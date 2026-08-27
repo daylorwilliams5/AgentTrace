@@ -1,0 +1,90 @@
+{
+  "schema": "agenttrace/v1",
+  "id": "arg-drift-a",
+  "name": "invoice-lookup A",
+  "task": "Find the total on invoice INV-2291 and email it to finance.",
+  "agent": { "name": "billing-agent", "version": "0.4.1", "model": "synthetic-model-1" },
+  "startedAt": 1756180000000,
+  "endedAt": 1756180011420,
+  "status": "success",
+  "steps": [
+    {
+      "id": "a0",
+      "type": "model",
+      "t": 1756180000000,
+      "dur": 1180,
+      "output": "I'll look up invoice INV-2291.",
+      "stopReason": "tool_use",
+      "tokens": { "in": 812, "out": 96 }
+    },
+    {
+      "id": "a1",
+      "type": "tool_call",
+      "t": 1756180001200,
+      "dur": 4,
+      "callId": "c1",
+      "name": "search_invoices",
+      "args": { "id": "INV-2291", "limit": 1 }
+    },
+    {
+      "id": "a2",
+      "type": "tool_result",
+      "t": 1756180001880,
+      "dur": 676,
+      "callId": "c1",
+      "name": "search_invoices",
+      "ok": true,
+      "result": {
+        "hits": 1,
+        "invoices": [{ "id": "INV-2291", "total": 4820.5, "currency": "USD" }]
+      }
+    },
+    {
+      "id": "a3",
+      "type": "state",
+      "t": 1756180001890,
+      "label": "invoice resolved",
+      "changes": [
+        { "path": "invoice.id", "before": null, "after": "INV-2291", "op": "set" },
+        { "path": "invoice.total", "before": null, "after": 4820.5, "op": "set" }
+      ]
+    },
+    {
+      "id": "a4",
+      "type": "model",
+      "t": 1756180002000,
+      "dur": 940,
+      "output": "Total is $4,820.50. Sending to finance@acme.test.",
+      "stopReason": "tool_use"
+    },
+    {
+      "id": "a5",
+      "type": "tool_call",
+      "t": 1756180003000,
+      "callId": "c2",
+      "name": "send_email",
+      "args": {
+        "to": "finance@acme.test",
+        "subject": "INV-2291 total",
+        "body": "$4,820.50"
+      }
+    },
+    {
+      "id": "a6",
+      "type": "tool_result",
+      "t": 1756180003410,
+      "dur": 410,
+      "callId": "c2",
+      "name": "send_email",
+      "ok": true,
+      "result": { "messageId": "m-77e1" }
+    },
+    {
+      "id": "a7",
+      "type": "stop",
+      "t": 1756180011420,
+      "reason": "goal_met",
+      "detail": "Email delivered."
+    }
+  ]
+}

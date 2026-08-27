@@ -1,0 +1,127 @@
+{
+  "schema": "agenttrace/v1",
+  "id": "failure-recovery-b",
+  "name": "changelog-post B",
+  "task": "Fetch the changelog for release 2.4 and post the highlights to #releases.",
+  "agent": { "name": "release-bot", "version": "3.0.1", "model": "synthetic-model-1" },
+  "startedAt": 1756201000000,
+  "endedAt": 1756201021400,
+  "status": "failure",
+  "steps": [
+    {
+      "id": "b0",
+      "type": "model",
+      "t": 1756201000000,
+      "dur": 690,
+      "output": "Fetching the changelog page for 2.4.",
+      "stopReason": "tool_use"
+    },
+    {
+      "id": "b1",
+      "type": "tool_call",
+      "t": 1756201000800,
+      "callId": "k1",
+      "name": "fetch_page",
+      "args": { "url": "https://docs.example.invalid/changelog/2.4" }
+    },
+    {
+      "id": "b2",
+      "type": "tool_result",
+      "t": 1756201003250,
+      "dur": 2450,
+      "callId": "k1",
+      "name": "fetch_page",
+      "ok": false,
+      "error": { "kind": "HttpError", "message": "503 Service Unavailable" }
+    },
+    {
+      "id": "b3",
+      "type": "error",
+      "t": 1756201003260,
+      "kind": "HttpError",
+      "message": "fetch_page returned 503",
+      "recoverable": true,
+      "ofStep": "b1"
+    },
+    {
+      "id": "b4",
+      "type": "retry",
+      "t": 1756201004270,
+      "ofStep": "b1",
+      "attempt": 1,
+      "reason": "transient_5xx",
+      "backoffMs": 1000
+    },
+    {
+      "id": "b5",
+      "type": "tool_call",
+      "t": 1756201004280,
+      "attempt": 1,
+      "callId": "k2",
+      "name": "fetch_page",
+      "args": { "url": "https://docs.example.invalid/changelog/2.4" }
+    },
+    {
+      "id": "b6",
+      "type": "tool_result",
+      "t": 1756201006700,
+      "dur": 2420,
+      "callId": "k2",
+      "name": "fetch_page",
+      "ok": false,
+      "error": { "kind": "HttpError", "message": "503 Service Unavailable" }
+    },
+    {
+      "id": "b7",
+      "type": "model",
+      "t": 1756201006800,
+      "dur": 980,
+      "output": "Still failing. I'll retry the fetch once more.",
+      "stopReason": "tool_use"
+    },
+    {
+      "id": "b8",
+      "type": "retry",
+      "t": 1756201009800,
+      "ofStep": "b5",
+      "attempt": 2,
+      "reason": "transient_5xx",
+      "backoffMs": 2000
+    },
+    {
+      "id": "b9",
+      "type": "tool_call",
+      "t": 1756201009810,
+      "attempt": 2,
+      "callId": "k3",
+      "name": "fetch_page",
+      "args": { "url": "https://docs.example.invalid/changelog/2.4" }
+    },
+    {
+      "id": "b10",
+      "type": "tool_result",
+      "t": 1756201012390,
+      "dur": 2580,
+      "callId": "k3",
+      "name": "fetch_page",
+      "ok": false,
+      "error": { "kind": "HttpError", "message": "503 Service Unavailable" }
+    },
+    {
+      "id": "b11",
+      "type": "error",
+      "t": 1756201012400,
+      "kind": "HttpError",
+      "message": "fetch_page returned 503 after 3 attempts",
+      "recoverable": false,
+      "ofStep": "b9"
+    },
+    {
+      "id": "b12",
+      "type": "stop",
+      "t": 1756201021400,
+      "reason": "error",
+      "detail": "Exhausted retries; changelog unavailable."
+    }
+  ]
+}

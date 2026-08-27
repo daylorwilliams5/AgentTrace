@@ -1,0 +1,91 @@
+{
+  "schema": "agenttrace/v1",
+  "id": "arg-drift-b",
+  "name": "invoice-lookup B",
+  "task": "Find the total on invoice INV-2291 and email it to finance.",
+  "agent": { "name": "billing-agent", "version": "0.4.2", "model": "synthetic-model-1" },
+  "startedAt": 1756181000000,
+  "endedAt": 1756181019030,
+  "status": "failure",
+  "steps": [
+    {
+      "id": "b0",
+      "type": "model",
+      "t": 1756181000000,
+      "dur": 1240,
+      "output": "I'll look up invoice INV-2291.",
+      "stopReason": "tool_use",
+      "tokens": { "in": 812, "out": 101 }
+    },
+    {
+      "id": "b1",
+      "type": "tool_call",
+      "t": 1756181001300,
+      "dur": 5,
+      "callId": "k1",
+      "name": "search_invoices",
+      "args": { "query": "INV-2291", "limit": 10 }
+    },
+    {
+      "id": "b2",
+      "type": "tool_result",
+      "t": 1756181003990,
+      "dur": 2690,
+      "callId": "k1",
+      "name": "search_invoices",
+      "ok": true,
+      "result": { "hits": 0, "invoices": [] }
+    },
+    {
+      "id": "b3",
+      "type": "model",
+      "t": 1756181004100,
+      "dur": 1010,
+      "output": "No hits for that query. I'll broaden the search.",
+      "stopReason": "tool_use"
+    },
+    {
+      "id": "b4",
+      "type": "retry",
+      "t": 1756181005200,
+      "ofStep": "b1",
+      "attempt": 1,
+      "reason": "empty_result_set"
+    },
+    {
+      "id": "b5",
+      "type": "tool_call",
+      "t": 1756181005210,
+      "attempt": 1,
+      "callId": "k2",
+      "name": "search_invoices",
+      "args": { "query": "2291", "limit": 50 }
+    },
+    {
+      "id": "b6",
+      "type": "tool_result",
+      "t": 1756181008700,
+      "dur": 3490,
+      "callId": "k2",
+      "name": "search_invoices",
+      "ok": false,
+      "error": { "kind": "RateLimit", "message": "search_invoices: 429, retry after 30s" }
+    },
+    {
+      "id": "b7",
+      "type": "error",
+      "t": 1756181008710,
+      "kind": "RateLimit",
+      "message": "search_invoices rate limited (429)",
+      "recoverable": true,
+      "ofStep": "b5"
+    },
+    {
+      "id": "b8",
+      "type": "stop",
+      "t": 1756181019030,
+      "reason": "max_steps",
+      "detail": "Step budget exhausted without resolving the invoice."
+    }
+  ]
+}

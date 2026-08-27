@@ -1,0 +1,133 @@
+{
+  "schema": "agenttrace/v1",
+  "id": "stop-decision-b",
+  "name": "incident-digest B",
+  "task": "Summarize the three most recent incident reports in the ops log.",
+  "agent": { "name": "ops-digest", "version": "1.2.1", "model": "synthetic-model-1" },
+  "startedAt": 1756191000000,
+  "endedAt": 1756191031050,
+  "status": "partial",
+  "steps": [
+    {
+      "id": "b0",
+      "type": "model",
+      "t": 1756191000000,
+      "dur": 910,
+      "output": "I'll list the three most recent incidents, then read each one.",
+      "stopReason": "tool_use"
+    },
+    {
+      "id": "b1",
+      "type": "tool_call",
+      "t": 1756191000950,
+      "callId": "k1",
+      "name": "list_incidents",
+      "args": { "limit": 3, "order": "recent" }
+    },
+    {
+      "id": "b2",
+      "type": "tool_result",
+      "t": 1756191001300,
+      "dur": 350,
+      "callId": "k1",
+      "name": "list_incidents",
+      "ok": true,
+      "result": { "ids": ["INC-4471", "INC-4468", "INC-4462"] }
+    },
+    {
+      "id": "b3",
+      "type": "model",
+      "t": 1756191001400,
+      "dur": 1120,
+      "output": "Three returned, but I should confirm the list isn't truncated before I rely on it.",
+      "stopReason": "tool_use"
+    },
+    {
+      "id": "b4",
+      "type": "tool_call",
+      "t": 1756191002600,
+      "callId": "k2",
+      "name": "list_incidents",
+      "args": { "limit": 25, "order": "recent" }
+    },
+    {
+      "id": "b5",
+      "type": "tool_result",
+      "t": 1756191003480,
+      "dur": 880,
+      "callId": "k2",
+      "name": "list_incidents",
+      "ok": true,
+      "result": { "ids": ["INC-4471", "INC-4468", "INC-4462"], "truncated": false }
+    },
+    {
+      "id": "b6",
+      "type": "tool_call",
+      "t": 1756191003600,
+      "callId": "k3",
+      "name": "read_incident",
+      "args": { "id": "INC-4471" }
+    },
+    {
+      "id": "b7",
+      "type": "tool_result",
+      "t": 1756191004020,
+      "dur": 420,
+      "callId": "k3",
+      "name": "read_incident",
+      "ok": true,
+      "result": { "id": "INC-4471", "severity": "sev2", "title": "Queue backlog" }
+    },
+    {
+      "id": "b8",
+      "type": "tool_call",
+      "t": 1756191004080,
+      "callId": "k4",
+      "name": "read_incident",
+      "args": { "id": "INC-4468" }
+    },
+    {
+      "id": "b9",
+      "type": "tool_result",
+      "t": 1756191004490,
+      "dur": 410,
+      "callId": "k4",
+      "name": "read_incident",
+      "ok": true,
+      "result": { "id": "INC-4468", "severity": "sev3", "title": "Stale cache node" }
+    },
+    {
+      "id": "b10",
+      "type": "tool_call",
+      "t": 1756191004550,
+      "callId": "k5",
+      "name": "read_incident",
+      "args": { "id": "INC-4462" }
+    },
+    {
+      "id": "b11",
+      "type": "tool_result",
+      "t": 1756191005010,
+      "dur": 460,
+      "callId": "k5",
+      "name": "read_incident",
+      "ok": true,
+      "result": { "id": "INC-4462", "severity": "sev1", "title": "Region failover" }
+    },
+    {
+      "id": "b12",
+      "type": "model",
+      "t": 1756191005100,
+      "dur": 1530,
+      "output": "I have all three reports. Writing the summary.",
+      "stopReason": "end_turn"
+    },
+    {
+      "id": "b13",
+      "type": "stop",
+      "t": 1756191031050,
+      "reason": "max_steps",
+      "detail": "Step budget exhausted during verification."
+    }
+  ]
+}

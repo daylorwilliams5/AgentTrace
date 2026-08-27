@@ -1,0 +1,107 @@
+{
+  "schema": "agenttrace/v1",
+  "id": "stop-decision-a",
+  "name": "incident-digest A",
+  "task": "Summarize the three most recent incident reports in the ops log.",
+  "agent": { "name": "ops-digest", "version": "1.2.0", "model": "synthetic-model-1" },
+  "startedAt": 1756190000000,
+  "endedAt": 1756190014200,
+  "status": "success",
+  "steps": [
+    {
+      "id": "a0",
+      "type": "model",
+      "t": 1756190000000,
+      "dur": 860,
+      "output": "I'll list the three most recent incidents, then read each one.",
+      "stopReason": "tool_use"
+    },
+    {
+      "id": "a1",
+      "type": "tool_call",
+      "t": 1756190000900,
+      "callId": "c1",
+      "name": "list_incidents",
+      "args": { "limit": 3, "order": "recent" }
+    },
+    {
+      "id": "a2",
+      "type": "tool_result",
+      "t": 1756190001240,
+      "dur": 340,
+      "callId": "c1",
+      "name": "list_incidents",
+      "ok": true,
+      "result": { "ids": ["INC-4471", "INC-4468", "INC-4462"] }
+    },
+    {
+      "id": "a3",
+      "type": "tool_call",
+      "t": 1756190001300,
+      "callId": "c2",
+      "name": "read_incident",
+      "args": { "id": "INC-4471" }
+    },
+    {
+      "id": "a4",
+      "type": "tool_result",
+      "t": 1756190001710,
+      "dur": 410,
+      "callId": "c2",
+      "name": "read_incident",
+      "ok": true,
+      "result": { "id": "INC-4471", "severity": "sev2", "title": "Queue backlog" }
+    },
+    {
+      "id": "a5",
+      "type": "tool_call",
+      "t": 1756190001760,
+      "callId": "c3",
+      "name": "read_incident",
+      "args": { "id": "INC-4468" }
+    },
+    {
+      "id": "a6",
+      "type": "tool_result",
+      "t": 1756190002150,
+      "dur": 390,
+      "callId": "c3",
+      "name": "read_incident",
+      "ok": true,
+      "result": { "id": "INC-4468", "severity": "sev3", "title": "Stale cache node" }
+    },
+    {
+      "id": "a7",
+      "type": "tool_call",
+      "t": 1756190002200,
+      "callId": "c4",
+      "name": "read_incident",
+      "args": { "id": "INC-4462" }
+    },
+    {
+      "id": "a8",
+      "type": "tool_result",
+      "t": 1756190002640,
+      "dur": 440,
+      "callId": "c4",
+      "name": "read_incident",
+      "ok": true,
+      "result": { "id": "INC-4462", "severity": "sev1", "title": "Region failover" }
+    },
+    {
+      "id": "a9",
+      "type": "model",
+      "t": 1756190002700,
+      "dur": 1490,
+      "output": "I have all three reports. Writing the summary.",
+      "stopReason": "end_turn"
+    },
+    {
+      "id": "a10",
+      "type": "stop",
+      "t": 1756190014200,
+      "reason": "goal_met",
+      "detail": "Summarized 3 incidents."
+    }
+  ]
+}

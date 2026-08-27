@@ -1,0 +1,134 @@
+{
+  "schema": "agenttrace/v1",
+  "id": "failure-recovery-a",
+  "name": "changelog-post A",
+  "task": "Fetch the changelog for release 2.4 and post the highlights to #releases.",
+  "agent": { "name": "release-bot", "version": "3.0.0", "model": "synthetic-model-1" },
+  "startedAt": 1756200000000,
+  "endedAt": 1756200018900,
+  "status": "success",
+  "steps": [
+    {
+      "id": "a0",
+      "type": "model",
+      "t": 1756200000000,
+      "dur": 720,
+      "output": "Fetching the changelog page for 2.4.",
+      "stopReason": "tool_use"
+    },
+    {
+      "id": "a1",
+      "type": "tool_call",
+      "t": 1756200000800,
+      "callId": "c1",
+      "name": "fetch_page",
+      "args": { "url": "https://docs.example.invalid/changelog/2.4" }
+    },
+    {
+      "id": "a2",
+      "type": "tool_result",
+      "t": 1756200003100,
+      "dur": 2300,
+      "callId": "c1",
+      "name": "fetch_page",
+      "ok": false,
+      "error": { "kind": "HttpError", "message": "503 Service Unavailable" }
+    },
+    {
+      "id": "a3",
+      "type": "error",
+      "t": 1756200003110,
+      "kind": "HttpError",
+      "message": "fetch_page returned 503",
+      "recoverable": true,
+      "ofStep": "a1"
+    },
+    {
+      "id": "a4",
+      "type": "retry",
+      "t": 1756200004120,
+      "ofStep": "a1",
+      "attempt": 1,
+      "reason": "transient_5xx",
+      "backoffMs": 1000
+    },
+    {
+      "id": "a5",
+      "type": "tool_call",
+      "t": 1756200004130,
+      "attempt": 1,
+      "callId": "c2",
+      "name": "fetch_page",
+      "args": { "url": "https://docs.example.invalid/changelog/2.4" }
+    },
+    {
+      "id": "a6",
+      "type": "tool_result",
+      "t": 1756200006480,
+      "dur": 2350,
+      "callId": "c2",
+      "name": "fetch_page",
+      "ok": false,
+      "error": { "kind": "HttpError", "message": "503 Service Unavailable" }
+    },
+    {
+      "id": "a7",
+      "type": "model",
+      "t": 1756200006600,
+      "dur": 1040,
+      "output": "The origin is down. Falling back to the cached copy.",
+      "stopReason": "tool_use"
+    },
+    {
+      "id": "a8",
+      "type": "tool_call",
+      "t": 1756200007700,
+      "callId": "c3",
+      "name": "search_cache",
+      "args": { "q": "changelog 2.4", "maxAgeHours": 48 }
+    },
+    {
+      "id": "a9",
+      "type": "tool_result",
+      "t": 1756200008090,
+      "dur": 390,
+      "callId": "c3",
+      "name": "search_cache",
+      "ok": true,
+      "result": { "hits": 1, "ageHours": 6, "title": "Release 2.4 changelog" }
+    },
+    {
+      "id": "a10",
+      "type": "model",
+      "t": 1756200008200,
+      "dur": 1310,
+      "output": "Got the cached changelog. Posting the highlights.",
+      "stopReason": "tool_use"
+    },
+    {
+      "id": "a11",
+      "type": "tool_call",
+      "t": 1756200009600,
+      "callId": "c4",
+      "name": "post_message",
+      "args": { "channel": "#releases", "text": "Release 2.4 highlights (from 6h cache)" }
+    },
+    {
+      "id": "a12",
+      "type": "tool_result",
+      "t": 1756200010040,
+      "dur": 440,
+      "callId": "c4",
+      "name": "post_message",
+      "ok": true,
+      "result": { "ts": "1756200010.0044" }
+    },
+    {
+      "id": "a13",
+      "type": "stop",
+      "t": 1756200018900,
+      "reason": "goal_met",
+      "detail": "Posted highlights from cached changelog."
+    }
+  ]
+}

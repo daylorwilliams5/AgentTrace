@@ -1,0 +1,62 @@
+/*
+ * Design tokens.
+ *
+ * The visual system is: hairlines, tabular monospace, and a low-chroma accent
+ * per step type used ONLY in a 3px gutter bar, a type label, and a strip
+ * segment. Never as a background fill, never as a card border.
+ *
+ * No gradients. No shadows. No glassmorphism. Border-radius is 0 everywhere
+ * except 2px on interactive controls.
+ */
+
+:root {
+  /* --- neutral ramp --- */
+  --bg: #0e0f11;
+  --bg-raised: #141618;
+  --bg-inset: #0a0b0c;
+  --bg-sel: #1b2027;
+  --bg-hover: #17191c;
+
+  --line: #232629;
+  --line-strong: #2e3236;
+
+  --fg: #e4e6e8;
+  /* Secondary text carries real content — step counts, values, band summaries —
+     so it sits well above the "barely there" range. */
+  --fg-muted: #949ba1;
+  --fg-dim: #6b7278;
+
+  --accent: #7c9cc4;
+
+  /* --- step type accents (low chroma, distinguishable at 3px) --- */
+  --t-model: #7c9cc4;
+  --t-tool_call: #58a69b;
+  --t-tool_result: #4c8b84;
+  --t-state: #c29b4e;
+  --t-error: #c25b54;
+  --t-retry: #c4834e;
+  --t-stop: #868d94;
+
+  /* --- diff operations --- */
+  --d-add: #4c8b84;
+  --d-del: #c25b54;
+  --d-mod: #c29b4e;
+  --d-same: var(--fg-dim);
+
+  /* --- geometry --- */
+  --row-h: 26px;
+  --gutter-w: 3px;
+  --h-topbar: 36px;
+  --w-rail: 232px;
+  --w-inspector: 440px;
+  --pad: 10px;
+
+  /* --- type --- */
+  --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --fs-data: 12px;
+  --fs-ui: 11px;
+  --fs-label: 10px;
+
+  color-scheme: dark;
+}
