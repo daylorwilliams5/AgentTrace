@@ -281,6 +281,31 @@ describe('redaction', () => {
     expect(out.originalFile).toBe('[removed by redaction]');
   });
 
+  it('folds the dash-escaped home directory the same way', () => {
+    // Claude Code encodes a project dir by replacing '/' with '-', so the home
+    // directory also appears as `-Users-tester`, carrying the same username.
+    expect(redact({ p: '/private/tmp/x/-Users-tester-Documents/s/repo' }, o)).toEqual({
+      p: '/private/tmp/x/~-Documents/s/repo',
+    });
+  });
+
+  it('folds both forms in one string', () => {
+    expect(
+      redact({ p: '/Users/tester/a and -Users-tester-Documents/b' }, o),
+    ).toEqual({ p: '~/a and ~-Documents/b' });
+  });
+
+  it('dash-escaping is exact — a different user is untouched', () => {
+    expect(redact({ p: '-Users-someoneelse-Documents' }, o)).toEqual({
+      p: '-Users-someoneelse-Documents',
+    });
+  });
+
+  it('remains byte-deterministic with both forms present', () => {
+    const v = { p: '/Users/tester/x -Users-tester-y'.repeat(50) };
+    expect(JSON.stringify(redact(v, o))).toBe(JSON.stringify(redact(v, o)));
+  });
+
   it('level none is a pass-through', () => {
     const v = { p: '/Users/tester/x' };
     expect(redact(v, { level: 'none' })).toEqual(v);

@@ -60,9 +60,24 @@ export interface RedactOptions {
   home?: string;
 }
 
+/**
+ * Claude Code names a project directory by replacing every `/` in its path with
+ * `-`, so `/Users/name/Documents` becomes the single segment
+ * `-Users-name-Documents`. That form appears inside transcript paths (session
+ * files, scratch directories) and carries the same username as the plain path,
+ * so it is folded the same way.
+ */
+export function dashEscapePath(p: string): string {
+  return p.split('/').join('-');
+}
+
 export function redactString(s: string, o: RedactOptions): string {
   if (o.level === 'none') return s;
-  let out = o.home ? s.split(o.home).join('~') : s;
+  let out = s;
+  if (o.home) {
+    out = out.split(o.home).join('~');
+    out = out.split(dashEscapePath(o.home)).join('~');
+  }
   if (o.level === 'strict' && out.length > STRICT_MAX) {
     // Deterministic: identical inputs always produce identical output.
     out = `${out.slice(0, STRICT_MAX)}\n…[${out.length - STRICT_MAX} more characters removed by redaction]`;
