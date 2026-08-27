@@ -24,7 +24,7 @@ export function EmptyState() {
         </div>
 
         <div className="at-empty__drop">
-          drop <span className="at-muted">agenttrace/v1</span> .json files here
+          drop <span className="at-muted">agenttrace/v1</span> .json or Claude Code .jsonl files here
           <br />
           <span className="at-dim">two files at once opens compare directly</span>
         </div>

@@ -1,8 +1,9 @@
 import { validateTrace } from '../schema/validate';
 import { nativeAdapter } from './native';
+import { claudeCodeAdapter } from './claude-code';
 import type { ImportResult, TraceAdapter } from './types';
 
-const adapters: TraceAdapter[] = [nativeAdapter];
+const adapters: TraceAdapter[] = [nativeAdapter, claudeCodeAdapter];
 
 export function register(adapter: TraceAdapter): void {
   const i = adapters.findIndex((a) => a.id === adapter.id);
@@ -59,10 +60,13 @@ export function importTrace(raw: unknown): ImportResult {
   const validated = validateTrace(parsed);
   if (!validated.ok) return { ok: false, adapterId: found.adapter.id, issues: validated.issues };
 
+  // Schema warnings plus whatever the adapter knows it could not represent.
+  const limitations = found.adapter.limitations?.(validated.trace, raw) ?? [];
+
   return {
     ok: true,
     trace: validated.trace,
     adapterId: found.adapter.id,
-    warnings: validated.warnings,
+    warnings: [...validated.warnings, ...limitations],
   };
 }

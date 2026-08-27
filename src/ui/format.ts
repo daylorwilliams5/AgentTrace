@@ -1,4 +1,4 @@
-import type { Step, StepType } from '../core/schema/types';
+import { toolStatusOf, type Step, type StepType } from '../core/schema/types';
 
 export const TYPE_LABEL: Record<StepType, string> = {
   model: 'model',
@@ -50,7 +50,7 @@ export function prettyJson(v: unknown): string {
 
 /** A failed tool_result reads as a failure in the row, not just in the payload. */
 export function isFailure(step: Step): boolean {
-  if (step.type === 'tool_result') return !step.ok;
+  if (step.type === 'tool_result') return toolStatusOf(step) === 'failure';
   return step.type === 'error';
 }
 

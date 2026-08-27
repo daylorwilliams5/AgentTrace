@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { AlignedRow } from '../../core/diff/align';
 import type { NormalizedStep, NormalizedTrace } from '../../core/schema/types';
 import { fmtValue, fmtValueShort } from '../format';
-import { MARK_GLYPH, salientField, shortPath, stepLabel } from './labels';
+import { MARK_GLYPH, emittedSummary, salientField, shortPath, soloValue, stepLabel } from './labels';
 import {
   GROUP_COMPRESS_KEEP,
   GROUP_COMPRESS_OVER,
@@ -45,7 +45,13 @@ function Mark({ mark }: { mark: keyof typeof MARK_GLYPH }) {
 function laneValue(row: AlignedRow, side: 'a' | 'b'): { k?: string; v: string } | undefined {
   const s = row[side];
   if (!s) return undefined;
-  if (s.step.type === 'model') return { v: s.label };
+  if (s.step.type === 'model') {
+    // An empty-output turn's evidence is the tools it emitted — the same thing
+    // its signature is built from. Showing the label instead would render
+    // "(empty output)" on both sides of a row that IS different.
+    if (!s.step.output.trim()) return emittedSummary(s) ? { v: emittedSummary(s)! } : undefined;
+    return { v: s.label };
+  }
   const f = salientField(row);
   if (!f) return undefined;
   const v = side === 'a' ? f.before : f.after;
@@ -165,11 +171,11 @@ function SoloBand({
             onClick={() => onSelect(r.index)}
           >
             <div className="tv-lane tv-lane--a">
-              {side === 'A' && s && <LaneStep s={s} steps={steps} />}
+              {side === 'A' && s && <LaneStep s={s} steps={steps} value={soloValue(s)} />}
             </div>
             <div className="tv-chan" />
             <div className="tv-lane tv-lane--b">
-              {side === 'B' && s && <LaneStep s={s} steps={steps} />}
+              {side === 'B' && s && <LaneStep s={s} steps={steps} value={soloValue(s)} />}
             </div>
           </div>
         );

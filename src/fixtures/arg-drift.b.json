@@ -3,7 +3,11 @@
   "id": "arg-drift-b",
   "name": "invoice-lookup B",
   "task": "Find the total on invoice INV-2291 and email it to finance.",
-  "agent": { "name": "billing-agent", "version": "0.4.2", "model": "synthetic-model-1" },
+  "agent": {
+    "name": "billing-agent",
+    "version": "0.4.2",
+    "model": "synthetic-model-1"
+  },
   "startedAt": 1756181000000,
   "endedAt": 1756181019030,
   "status": "failure",
@@ -15,7 +19,10 @@
       "dur": 1240,
       "output": "I'll look up invoice INV-2291.",
       "stopReason": "tool_use",
-      "tokens": { "in": 812, "out": 101 }
+      "tokens": {
+        "in": 812,
+        "out": 101
+      }
     },
     {
       "id": "b1",
@@ -24,7 +31,10 @@
       "dur": 5,
       "callId": "k1",
       "name": "search_invoices",
-      "args": { "query": "INV-2291", "limit": 10 }
+      "args": {
+        "query": "INV-2291",
+        "limit": 10
+      }
     },
     {
       "id": "b2",
@@ -33,8 +43,11 @@
       "dur": 2690,
       "callId": "k1",
       "name": "search_invoices",
-      "ok": true,
-      "result": { "hits": 0, "invoices": [] }
+      "status": "success",
+      "result": {
+        "hits": 0,
+        "invoices": []
+      }
     },
     {
       "id": "b3",
@@ -59,7 +72,10 @@
       "attempt": 1,
       "callId": "k2",
       "name": "search_invoices",
-      "args": { "query": "2291", "limit": 50 }
+      "args": {
+        "query": "2291",
+        "limit": 50
+      }
     },
     {
       "id": "b6",
@@ -68,8 +84,11 @@
       "dur": 3490,
       "callId": "k2",
       "name": "search_invoices",
-      "ok": false,
-      "error": { "kind": "RateLimit", "message": "search_invoices: 429, retry after 30s" }
+      "status": "failure",
+      "error": {
+        "kind": "RateLimit",
+        "message": "search_invoices: 429, retry after 30s"
+      }
     },
     {
       "id": "b7",

@@ -3,7 +3,11 @@
   "id": "stop-decision-b",
   "name": "incident-digest B",
   "task": "Summarize the three most recent incident reports in the ops log.",
-  "agent": { "name": "ops-digest", "version": "1.2.1", "model": "synthetic-model-1" },
+  "agent": {
+    "name": "ops-digest",
+    "version": "1.2.1",
+    "model": "synthetic-model-1"
+  },
   "startedAt": 1756191000000,
   "endedAt": 1756191031050,
   "status": "partial",
@@ -22,7 +26,10 @@
       "t": 1756191000950,
       "callId": "k1",
       "name": "list_incidents",
-      "args": { "limit": 3, "order": "recent" }
+      "args": {
+        "limit": 3,
+        "order": "recent"
+      }
     },
     {
       "id": "b2",
@@ -31,8 +38,14 @@
       "dur": 350,
       "callId": "k1",
       "name": "list_incidents",
-      "ok": true,
-      "result": { "ids": ["INC-4471", "INC-4468", "INC-4462"] }
+      "status": "success",
+      "result": {
+        "ids": [
+          "INC-4471",
+          "INC-4468",
+          "INC-4462"
+        ]
+      }
     },
     {
       "id": "b3",
@@ -48,7 +61,10 @@
       "t": 1756191002600,
       "callId": "k2",
       "name": "list_incidents",
-      "args": { "limit": 25, "order": "recent" }
+      "args": {
+        "limit": 25,
+        "order": "recent"
+      }
     },
     {
       "id": "b5",
@@ -57,8 +73,15 @@
       "dur": 880,
       "callId": "k2",
       "name": "list_incidents",
-      "ok": true,
-      "result": { "ids": ["INC-4471", "INC-4468", "INC-4462"], "truncated": false }
+      "status": "success",
+      "result": {
+        "ids": [
+          "INC-4471",
+          "INC-4468",
+          "INC-4462"
+        ],
+        "truncated": false
+      }
     },
     {
       "id": "b6",
@@ -66,7 +89,9 @@
       "t": 1756191003600,
       "callId": "k3",
       "name": "read_incident",
-      "args": { "id": "INC-4471" }
+      "args": {
+        "id": "INC-4471"
+      }
     },
     {
       "id": "b7",
@@ -75,8 +100,12 @@
       "dur": 420,
       "callId": "k3",
       "name": "read_incident",
-      "ok": true,
-      "result": { "id": "INC-4471", "severity": "sev2", "title": "Queue backlog" }
+      "status": "success",
+      "result": {
+        "id": "INC-4471",
+        "severity": "sev2",
+        "title": "Queue backlog"
+      }
     },
     {
       "id": "b8",
@@ -84,7 +113,9 @@
       "t": 1756191004080,
       "callId": "k4",
       "name": "read_incident",
-      "args": { "id": "INC-4468" }
+      "args": {
+        "id": "INC-4468"
+      }
     },
     {
       "id": "b9",
@@ -93,8 +124,12 @@
       "dur": 410,
       "callId": "k4",
       "name": "read_incident",
-      "ok": true,
-      "result": { "id": "INC-4468", "severity": "sev3", "title": "Stale cache node" }
+      "status": "success",
+      "result": {
+        "id": "INC-4468",
+        "severity": "sev3",
+        "title": "Stale cache node"
+      }
     },
     {
       "id": "b10",
@@ -102,7 +137,9 @@
       "t": 1756191004550,
       "callId": "k5",
       "name": "read_incident",
-      "args": { "id": "INC-4462" }
+      "args": {
+        "id": "INC-4462"
+      }
     },
     {
       "id": "b11",
@@ -111,8 +148,12 @@
       "dur": 460,
       "callId": "k5",
       "name": "read_incident",
-      "ok": true,
-      "result": { "id": "INC-4462", "severity": "sev1", "title": "Region failover" }
+      "status": "success",
+      "result": {
+        "id": "INC-4462",
+        "severity": "sev1",
+        "title": "Region failover"
+      }
     },
     {
       "id": "b12",

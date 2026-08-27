@@ -41,7 +41,14 @@ export const R = (
   ok: boolean,
   result?: unknown,
   extra: Partial<ToolResultStep> = {},
-): ToolResultStep => ({ id: uid('tr'), type: 'tool_result', callId, ok, result, ...extra });
+): ToolResultStep => ({
+  id: uid('tr'),
+  type: 'tool_result',
+  callId,
+  status: ok ? 'success' : 'failure',
+  result,
+  ...extra,
+});
 
 export const RETRY = (attempt: number, extra: Partial<RetryStep> = {}): RetryStep => ({
   id: uid('rt'),

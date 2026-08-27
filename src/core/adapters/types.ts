@@ -17,6 +17,16 @@ export interface TraceAdapter {
   detect(raw: unknown): number;
   /** Convert to agenttrace/v1. May throw; the registry reports the failure. */
   parse(raw: unknown): Trace;
+
+  /**
+   * Limitations of THIS conversion, surfaced to the user next to the trace.
+   *
+   * Adapters lose information — a source that records no stopping decision, or
+   * no tool-result status, produces an honest but partial trace. Rather than
+   * hide that, an adapter states it here and the import surface shows it. These
+   * never block an import.
+   */
+  limitations?(trace: Trace, raw: unknown): ValidationIssue[];
 }
 
 export type ImportResult =

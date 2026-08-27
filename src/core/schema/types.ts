@@ -73,14 +73,47 @@ export interface ToolCallStep extends StepBase {
   args?: unknown;
 }
 
+/**
+ * Whether the tool call succeeded, as reported BY THE SOURCE.
+ *
+ * `unknown` is a first-class value, not a gap to be filled in. Some producers
+ * simply do not record success — Claude Code omits `is_error` on about half of
+ * its tool results — and turning that silence into `success` would make the
+ * trace claim more than the source did. AgentTrace never infers status from
+ * result content: a shell command that prints an error while the transcript
+ * reports success is shown as exactly that, both facts side by side.
+ */
+export type ToolStatus = 'success' | 'failure' | 'unknown';
+
+export const TOOL_STATUSES: readonly ToolStatus[] = ['success', 'failure', 'unknown'] as const;
+
 export interface ToolResultStep extends StepBase {
   type: 'tool_result';
   callId: string;
   /** Resolved from the paired call during normalization when absent. */
   name?: string;
-  ok: boolean;
+  /** Preferred. Omit only if using the legacy `ok` boolean. */
+  status?: ToolStatus;
+  /**
+   * Legacy boolean, still accepted so traces written before the tri-state
+   * migration keep importing. `true` → success, `false` → failure. Read it
+   * through `toolStatusOf`, never directly.
+   */
+  ok?: boolean;
   result?: unknown;
   error?: { kind?: string; message: string };
+}
+
+/**
+ * The single reader for tool-result status. Canonicalizes the tri-state and the
+ * legacy boolean to one value, so a pre-migration trace and a post-migration
+ * trace describing the same run produce identical signatures.
+ */
+export function toolStatusOf(step: ToolResultStep): ToolStatus {
+  if (step.status) return step.status;
+  if (step.ok === true) return 'success';
+  if (step.ok === false) return 'failure';
+  return 'unknown';
 }
 
 export interface StateChange {
@@ -181,8 +214,14 @@ export interface NormalizedStep {
   /** For tool_result: the index of its paired tool_call, and that call's args. */
   pairedIndex?: number;
   callArgs?: unknown;
-  /** For tool_call: whether its paired result succeeded, when present. */
-  resultOk?: boolean;
+  /** For tool_call: the status its paired result reported, when present. */
+  resultStatus?: ToolStatus;
+  /**
+   * For a model step: anchors of the maximal run of tool_call steps immediately
+   * following it, in order. This is the step's observable evidence when it
+   * produced no visible output — see `SignatureContext` in diff/signature.ts.
+   */
+  emittedTools?: string[];
 }
 
 export interface NormalizedTrace {

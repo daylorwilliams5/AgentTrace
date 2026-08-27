@@ -1,9 +1,10 @@
 import type { AlignedRow } from '../../core/diff/align';
 import type { Divergence } from '../../core/diff/divergence';
 import type { FieldDiff } from '../../core/diff/fields';
-import type { NormalizedStep, StopReason } from '../../core/schema/types';
+import { toolStatusOf, type NormalizedStep, type StopReason } from '../../core/schema/types';
 import { leafPaths } from '../../core/util/json';
-import { fmtValue } from '../format';
+import { fmtValue, fmtValueShort } from '../format';
+import { pickPreviewField, pickPreviewLeaf } from '../previewFields';
 
 /**
  * THE MECHANICAL LEXICON.
@@ -91,13 +92,16 @@ export function stepLabel(s: NormalizedStep, all: NormalizedStep[]): StepLabel {
 
     case 'tool_result': {
       const name = step.name ?? nameOfPairedCall(s, all) ?? 'result';
-      if (!step.ok) return { mark: 'fail', text: name, sub: step.error?.kind ?? step.error?.message };
-      // A producer that could not determine success says so in `meta.okKnown`.
-      // Render that as unknown (○), never as a confirmed success (✓). This is
-      // producer-agnostic: any adapter may set it. `meta` is excluded from the
-      // behavioural signature, so it can never create a divergence.
-      if (isOkUnknown(s)) return { mark: 'neutral', text: name };
-      return { mark: 'ok', text: name };
+      switch (toolStatusOf(step)) {
+        case 'failure':
+          return { mark: 'fail', text: name, sub: step.error?.kind ?? step.error?.message };
+        // A status the source never reported renders as unknown (○), never as a
+        // confirmed success (✓).
+        case 'unknown':
+          return { mark: 'neutral', text: name };
+        default:
+          return { mark: 'ok', text: name };
+      }
     }
 
     case 'state': {
@@ -133,7 +137,7 @@ export function stepLabel(s: NormalizedStep, all: NormalizedStep[]): StepLabel {
 
 /** True when the source recorded no success/failure signal for this result. */
 export function isOkUnknown(s: NormalizedStep): boolean {
-  return s.step.type === 'tool_result' && s.step.meta?.okKnown === false;
+  return s.step.type === 'tool_result' && toolStatusOf(s.step) === 'unknown';
 }
 
 function nameOfPairedCall(s: NormalizedStep, all: NormalizedStep[]): string | undefined {
@@ -145,6 +149,60 @@ function nameOfPairedCall(s: NormalizedStep, all: NormalizedStep[]): string | un
 function toolNameOfStepId(id: string, all: NormalizedStep[]): string | undefined {
   const found = all.find((x) => x.step.id === id);
   return found?.step.type === 'tool_call' ? found.step.name : undefined;
+}
+
+/**
+ * What an empty-output model turn actually did: the tools it decided to call.
+ *
+ * Display-only, and derived from `NormalizedStep.emittedTools`, which is the
+ * same evidence the signature uses. Without it a contextualized model row shows
+ * "(empty output)" on both sides while being classified as different — visually
+ * identical content marked as changed, with the reason invisible.
+ *
+ * Consecutive identical anchors are counted rather than repeated, so eight
+ * parallel greps read as `calls Grep ×8`.
+ */
+export function emittedSummary(s: NormalizedStep): string | undefined {
+  const tools = s.emittedTools;
+  if (!tools?.length) return undefined;
+  const parts: string[] = [];
+  for (const anchor of tools) {
+    const name = anchor.startsWith('tool:') ? anchor.slice(5) : anchor;
+    const last = parts[parts.length - 1];
+    if (last?.startsWith(name)) {
+      const n = Number(last.slice(name.length + 2) || 1);
+      parts[parts.length - 1] = `${name} ×${n + 1}`;
+    } else parts.push(name);
+  }
+  return `calls ${parts.join(', ')}`;
+}
+
+/**
+ * A content preview for a step that has no counterpart to diff against.
+ *
+ * This is the "make the result easy to see" rule: when Run A's Bash printed
+ * `no matches found` while the transcript reported success, the reader must be
+ * able to see that WITHOUT opening raw JSON. It shows the step's own first leaf
+ * value — it never parses the text or judges what it means.
+ */
+export function soloValue(s: NormalizedStep): { k?: string; v: string } | undefined {
+  const step = s.step;
+  if (step.type === 'model') {
+    if (!step.output.trim()) {
+      const e = emittedSummary(s);
+      return e ? { v: e } : undefined;
+    }
+    return s.label ? { v: s.label } : undefined;
+  }
+  const payload =
+    step.type === 'tool_call' ? step.args : step.type === 'tool_result' ? step.result : undefined;
+  if (payload === undefined || payload === null) return undefined;
+  if (typeof payload === 'string') return payload.trim() ? { v: fmtValueShort(payload, 72) } : undefined;
+  const picked = pickPreviewLeaf(step.type, [...leafPaths(payload)]);
+  if (!picked) return undefined;
+  const [path, value] = picked;
+  if (path === '$') return { v: fmtValueShort(value, 72) };
+  return { k: shortPath(path), v: fmtValueShort(value, 72) };
 }
 
 /** Leaf key/value pairs of a tool call's arguments. Content, not selection. */
@@ -160,14 +218,13 @@ export function argLines(s: NormalizedStep, max = 6): Array<{ k: string; v: stri
 }
 
 /**
- * Which single changed field to surface on a compact two-lane row.
- *
- * A fixed per-type prefix priority, in the same category as the stop lexicon:
- * it encodes where in OUR schema a step's payload lives, not which change
- * matters more. Steps whose label already carries the change (stop, error,
- * retry) return nothing rather than repeat themselves.
+ * Which part of a step's payload a row preview may draw from. Scoping only —
+ * the choice WITHIN the scope is made by the shared preference table, so paired
+ * and one-sided previews rank fields identically. Steps whose label already
+ * carries the change (stop, error, retry) return nothing rather than repeat
+ * themselves.
  */
-const SALIENT_PREFIX: Record<string, string[]> = {
+const PAYLOAD_PREFIX: Record<string, string[]> = {
   tool_call: ['args.'],
   tool_result: ['result.', 'error.'],
   state: ['changes['],
@@ -180,13 +237,10 @@ const SALIENT_PREFIX: Record<string, string[]> = {
 export function salientField(row: AlignedRow): FieldDiff | undefined {
   const type = (row.a ?? row.b)?.step.type;
   if (!type || !row.fields?.length) return undefined;
-  const prefixes = SALIENT_PREFIX[type] ?? [];
+  const prefixes = PAYLOAD_PREFIX[type] ?? [];
   if (prefixes.length === 0) return undefined;
-  for (const p of prefixes) {
-    const hit = row.fields.find((f) => f.path.startsWith(p));
-    if (hit) return hit;
-  }
-  return row.fields[0];
+  const inScope = row.fields.filter((f) => prefixes.some((p) => f.path.startsWith(p)));
+  return pickPreviewField(type, inScope.length ? inScope : row.fields);
 }
 
 /** "args.limit" → "limit"; "changes[0].after" → "after". */
@@ -233,8 +287,8 @@ export function describeChange(row: AlignedRow): string {
     case 'model':
       return 'output changed';
     case 'tool_result': {
-      const okChanged = fields.some((f) => f.path === 'ok');
-      if (okChanged) return 'outcome changed';
+      const statusChanged = fields.some((f) => f.path === 'status');
+      if (statusChanged) return 'outcome changed';
       return `${fields.length} field${fields.length === 1 ? '' : 's'} changed`;
     }
     case 'state':

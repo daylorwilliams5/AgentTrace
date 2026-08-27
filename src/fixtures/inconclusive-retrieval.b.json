@@ -3,7 +3,11 @@
   "id": "inconclusive-retrieval-b",
   "name": "address-confirm B",
   "task": "Find the shipping address on file for customer 'J. Rivera' and confirm it.",
-  "agent": { "name": "support-agent", "version": "2.1.1", "model": "synthetic-model-1" },
+  "agent": {
+    "name": "support-agent",
+    "version": "2.1.1",
+    "model": "synthetic-model-1"
+  },
   "startedAt": 1756211000000,
   "endedAt": 1756211009300,
   "status": "success",
@@ -22,7 +26,9 @@
       "t": 1756211000700,
       "callId": "k1",
       "name": "search_customers",
-      "args": { "name": "J. Rivera" }
+      "args": {
+        "name": "J. Rivera"
+      }
     },
     {
       "id": "b2",
@@ -31,13 +37,28 @@
       "dur": 490,
       "callId": "k1",
       "name": "search_customers",
-      "ok": true,
+      "status": "success",
       "result": {
         "hits": 3,
         "customers": [
-          { "id": "C-1041", "name": "Jordan Rivera", "city": "Tucson", "status": "closed" },
-          { "id": "C-2277", "name": "Jamie Rivera", "city": "Reno", "status": "active" },
-          { "id": "C-3390", "name": "Jules Rivera", "city": "Tacoma", "status": "closed" }
+          {
+            "id": "C-1041",
+            "name": "Jordan Rivera",
+            "city": "Tucson",
+            "status": "closed"
+          },
+          {
+            "id": "C-2277",
+            "name": "Jamie Rivera",
+            "city": "Reno",
+            "status": "active"
+          },
+          {
+            "id": "C-3390",
+            "name": "Jules Rivera",
+            "city": "Tacoma",
+            "status": "closed"
+          }
         ]
       }
     },
@@ -54,7 +75,14 @@
       "type": "state",
       "t": 1756211002200,
       "label": "customer resolved",
-      "changes": [{ "path": "customer.id", "before": null, "after": "C-1041", "op": "set" }]
+      "changes": [
+        {
+          "path": "customer.id",
+          "before": null,
+          "after": "C-1041",
+          "op": "set"
+        }
+      ]
     },
     {
       "id": "b5",
@@ -62,7 +90,9 @@
       "t": 1756211002300,
       "callId": "k2",
       "name": "get_address",
-      "args": { "customerId": "C-1041" }
+      "args": {
+        "customerId": "C-1041"
+      }
     },
     {
       "id": "b6",
@@ -71,8 +101,13 @@
       "dur": 320,
       "callId": "k2",
       "name": "get_address",
-      "ok": true,
-      "result": { "line1": "12 Placer Row", "city": "Tucson", "region": "AZ", "postal": "85701" }
+      "status": "success",
+      "result": {
+        "line1": "12 Placer Row",
+        "city": "Tucson",
+        "region": "AZ",
+        "postal": "85701"
+      }
     },
     {
       "id": "b7",

@@ -3,7 +3,11 @@
   "id": "inconclusive-retrieval-a",
   "name": "address-confirm A",
   "task": "Find the shipping address on file for customer 'J. Rivera' and confirm it.",
-  "agent": { "name": "support-agent", "version": "2.1.0", "model": "synthetic-model-1" },
+  "agent": {
+    "name": "support-agent",
+    "version": "2.1.0",
+    "model": "synthetic-model-1"
+  },
   "startedAt": 1756210000000,
   "endedAt": 1756210012700,
   "status": "success",
@@ -22,7 +26,9 @@
       "t": 1756210000700,
       "callId": "c1",
       "name": "search_customers",
-      "args": { "name": "J. Rivera" }
+      "args": {
+        "name": "J. Rivera"
+      }
     },
     {
       "id": "a2",
@@ -31,13 +37,28 @@
       "dur": 520,
       "callId": "c1",
       "name": "search_customers",
-      "ok": true,
+      "status": "success",
       "result": {
         "hits": 3,
         "customers": [
-          { "id": "C-1041", "name": "Jordan Rivera", "city": "Tucson", "status": "closed" },
-          { "id": "C-2277", "name": "Jamie Rivera", "city": "Reno", "status": "active" },
-          { "id": "C-3390", "name": "Jules Rivera", "city": "Tacoma", "status": "closed" }
+          {
+            "id": "C-1041",
+            "name": "Jordan Rivera",
+            "city": "Tucson",
+            "status": "closed"
+          },
+          {
+            "id": "C-2277",
+            "name": "Jamie Rivera",
+            "city": "Reno",
+            "status": "active"
+          },
+          {
+            "id": "C-3390",
+            "name": "Jules Rivera",
+            "city": "Tacoma",
+            "status": "closed"
+          }
         ]
       }
     },
@@ -46,7 +67,7 @@
       "type": "model",
       "t": 1756210001300,
       "dur": 1180,
-      "output": "Three matches — that's ambiguous. I'll narrow by account status before choosing one.",
+      "output": "Three matches \u2014 that's ambiguous. I'll narrow by account status before choosing one.",
       "stopReason": "tool_use"
     },
     {
@@ -55,7 +76,10 @@
       "t": 1756210002600,
       "callId": "c2",
       "name": "search_customers",
-      "args": { "name": "J. Rivera", "status": "active" }
+      "args": {
+        "name": "J. Rivera",
+        "status": "active"
+      }
     },
     {
       "id": "a5",
@@ -64,11 +88,16 @@
       "dur": 480,
       "callId": "c2",
       "name": "search_customers",
-      "ok": true,
+      "status": "success",
       "result": {
         "hits": 1,
         "customers": [
-          { "id": "C-2277", "name": "Jamie Rivera", "city": "Reno", "status": "active" }
+          {
+            "id": "C-2277",
+            "name": "Jamie Rivera",
+            "city": "Reno",
+            "status": "active"
+          }
         ]
       }
     },
@@ -77,7 +106,14 @@
       "type": "state",
       "t": 1756210003090,
       "label": "customer resolved",
-      "changes": [{ "path": "customer.id", "before": null, "after": "C-2277", "op": "set" }]
+      "changes": [
+        {
+          "path": "customer.id",
+          "before": null,
+          "after": "C-2277",
+          "op": "set"
+        }
+      ]
     },
     {
       "id": "a7",
@@ -85,7 +121,9 @@
       "t": 1756210003200,
       "callId": "c3",
       "name": "get_address",
-      "args": { "customerId": "C-2277" }
+      "args": {
+        "customerId": "C-2277"
+      }
     },
     {
       "id": "a8",
@@ -94,8 +132,13 @@
       "dur": 310,
       "callId": "c3",
       "name": "get_address",
-      "ok": true,
-      "result": { "line1": "88 Camino Vista", "city": "Reno", "region": "NV", "postal": "89501" }
+      "status": "success",
+      "result": {
+        "line1": "88 Camino Vista",
+        "city": "Reno",
+        "region": "NV",
+        "postal": "89501"
+      }
     },
     {
       "id": "a9",

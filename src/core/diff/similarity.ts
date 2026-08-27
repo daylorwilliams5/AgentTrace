@@ -1,4 +1,4 @@
-import type { NormalizedStep } from '../schema/types';
+import { toolStatusOf, type NormalizedStep } from '../schema/types';
 import { canonicalJson, clamp01, eq, jaccard, leafPaths, tokens } from '../util/json';
 
 /**
@@ -104,7 +104,7 @@ function payloadSimilarity(a: NormalizedStep, b: NormalizedStep): number {
     case 'tool_result': {
       const other = sb as typeof sa;
       return (
-        0.4 * (sa.ok === other.ok ? 1 : 0) +
+        0.4 * (toolStatusOf(sa) === toolStatusOf(other) ? 1 : 0) +
         0.3 * eq(sa.error?.kind, other.error?.kind) +
         0.3 * jaccard(pathSet(sa.result ?? null), pathSet(other.result ?? null))
       );

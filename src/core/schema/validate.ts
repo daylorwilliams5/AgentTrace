@@ -3,7 +3,7 @@ import { SCHEMA_ID, type Trace } from './types';
 
 /**
  * Import validation. The goal is a path-precise, human-readable error —
- * "step 41 (id=s41): tool_result.ok expected boolean, received string" is the
+ * "step 41 (id=s41): tool_result.status invalid enum value" is the
  * difference between a usable tool and a broken one.
  *
  * Permissiveness is deliberate: unknown keys are preserved, not stripped, so a
@@ -47,7 +47,10 @@ const toolResultStep = z.looseObject({
   type: z.literal('tool_result'),
   callId: z.string().min(1),
   name: z.string().optional(),
-  ok: z.boolean(),
+  // Tri-state preferred; the legacy boolean is still accepted. Neither present
+  // means the producer did not record status, which is `unknown`, not success.
+  status: z.enum(['success', 'failure', 'unknown']).optional(),
+  ok: z.boolean().optional(),
   result: z.unknown().optional(),
   error: z.looseObject({ kind: z.string().optional(), message: z.string() }).optional(),
 });

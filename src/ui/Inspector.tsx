@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { AlignedRow } from '../core/diff/align';
 import { auxiliaryDiff, type FieldDiff } from '../core/diff/fields';
 import { wordDiff } from '../core/diff/words';
-import type { NormalizedStep, Step } from '../core/schema/types';
+import { toolStatusOf, type NormalizedStep, type Step } from '../core/schema/types';
 import { GLYPH } from './compareRows';
 import { TYPE_LABEL, fmtDur, fmtOffset, fmtValue, fmtValueShort, prettyJson, typeColor } from './format';
 
@@ -144,7 +144,12 @@ function Payload({ step }: { step: Step }) {
     case 'tool_result':
       return (
         <>
-          {!step.ok && step.error && (
+          {toolStatusOf(step) === 'unknown' && (
+            <p className="at-text at-dim">
+              status not reported by the source
+            </p>
+          )}
+          {toolStatusOf(step) === 'failure' && step.error && (
             <p className="at-text" style={{ color: 'var(--t-error)' }}>
               {step.error.kind ? `${step.error.kind}: ` : ''}
               {step.error.message}

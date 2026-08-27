@@ -1,0 +1,604 @@
+{
+  "schema": "agenttrace/v1",
+  "id": "bbefb8a7-4e11-4858-ac39-ef0f611c67c0",
+  "name": "bbefb8a7-4e11-4858-ac39-ef0f611c67c0",
+  "task": "Produce an import dependency report for this repository's src/ directory. For every TypeScript file under src/, list which other files under src/ it imports from. Then state which single file is imported by the most other files, and give that count.",
+  "agent": {
+    "name": "claude-code",
+    "version": "2.1.229",
+    "model": "claude-sonnet-5"
+  },
+  "startedAt": "2026-08-27T21:45:59.132Z",
+  "endedAt": "2026-08-27T21:47:36.646Z",
+  "status": "unknown",
+  "meta": {
+    "source": "claude-code",
+    "sessionId": "bbefb8a7-4e11-4858-ac39-ef0f611c67c0",
+    "redaction": "paths"
+  },
+  "steps": [
+    {
+      "id": "m:msg_011CeTzAMZebdKHEABJqYTKZ",
+      "type": "model",
+      "model": "claude-sonnet-5",
+      "output": "",
+      "stopReason": "tool_use",
+      "tokens": {
+        "in": 2,
+        "out": 197
+      },
+      "t": "2026-08-27T21:46:03.126Z"
+    },
+    {
+      "id": "c:toolu_01GFqekejJabfzg7Y8q3Tzfc",
+      "type": "tool_call",
+      "callId": "toolu_01GFqekejJabfzg7Y8q3Tzfc",
+      "name": "Bash",
+      "args": {
+        "command": "find /private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src -type f \\( -name \"*.ts\" -o -name \"*.tsx\" \\) | sort",
+        "description": "List TypeScript files under src/"
+      },
+      "t": "2026-08-27T21:46:03.126Z"
+    },
+    {
+      "id": "r:toolu_01GFqekejJabfzg7Y8q3Tzfc",
+      "type": "tool_result",
+      "callId": "toolu_01GFqekejJabfzg7Y8q3Tzfc",
+      "name": "Bash",
+      "status": "success",
+      "result": {
+        "stdout": "/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/app/App.tsx\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/app/main.tsx\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/adapters/claude-code/group.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/adapters/claude-code/index.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/adapters/claude-code/map.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/adapters/claude-code/records.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/adapters/claude-code/redact.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/adapters/claude-code/sessions.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/adapters/native.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/adapters/registry.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/adapters/types.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/diff/align.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/diff/anchor.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/diff/divergence.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/diff/fields.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/diff/signature.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/diff/similarity.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/diff/words.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/index.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/model/normalize.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/schema/types.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/schema/validate.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/util/json.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/fixtures/index.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/io/readFiles.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/state/store.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/ui/CompareView.tsx\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/ui/EmptyState.tsx\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/ui/Inspector.tsx\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/ui/OverviewStrip.tsx\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/ui/Rail.tsx\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/ui/StepCells.tsx\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/ui/Timeline.tsx\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/ui/TopBar.tsx\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/ui/compareRows.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/ui/format.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/ui/trajectory/DifferenceInspector.tsx\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/ui/trajectory/DifferenceRegion.tsx\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/ui/trajectory/DifferencesRail.tsx\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/ui/trajectory/TrajectoryView.tsx\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/ui/trajectory/labels.ts\n/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/ui/trajectory/segments.ts",
+        "stderr": "",
+        "interrupted": false,
+        "isImage": false,
+        "noOutputExpected": false
+      },
+      "t": "2026-08-27T21:46:05.034Z",
+      "dur": 1908
+    },
+    {
+      "id": "m:msg_011CeTzAnwsf3vnpo7FQ4aYT",
+      "type": "model",
+      "model": "claude-sonnet-5",
+      "output": "",
+      "stopReason": "tool_use",
+      "tokens": {
+        "in": 2,
+        "out": 314
+      },
+      "t": "2026-08-27T21:46:09.046Z"
+    },
+    {
+      "id": "c:toolu_01Gd75jJhPwaTn9P6euHF2ZR",
+      "type": "tool_call",
+      "callId": "toolu_01Gd75jJhPwaTn9P6euHF2ZR",
+      "name": "Grep",
+      "args": {
+        "pattern": "^import .*from ['\"]\\.",
+        "path": "/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src",
+        "output_mode": "content",
+        "-n": true,
+        "glob": "*.{ts,tsx}",
+        "head_limit": 500
+      },
+      "t": "2026-08-27T21:46:09.046Z"
+    },
+    {
+      "id": "r:toolu_01Gd75jJhPwaTn9P6euHF2ZR",
+      "type": "tool_result",
+      "callId": "toolu_01Gd75jJhPwaTn9P6euHF2ZR",
+      "name": "Grep",
+      "status": "unknown",
+      "result": {
+        "mode": "content",
+        "numFiles": 0,
+        "filenames": [],
+        "content": "src/app/main.tsx:5:import { App } from './App';\nsrc/state/store.ts:2:import { importTrace } from '../core/adapters/registry';\nsrc/state/store.ts:3:import { normalize } from '../core/model/normalize';\nsrc/state/store.ts:4:import type { NormalizedTrace, StepType } from '../core/schema/types';\nsrc/state/store.ts:5:import type { ValidationIssue } from '../core/schema/validate';\nsrc/state/store.ts:6:import { STEP_TYPES } from '../core/schema/types';\nsrc/ui/EmptyState.tsx:1:import { FIXTURE_PAIRS } from '../fixtures';\nsrc/ui/EmptyState.tsx:2:import { useApp } from '../state/store';\nsrc/ui/EmptyState.tsx:3:import { pickFiles } from '../io/readFiles';\nsrc/core/model/normalize.ts:1:import { anchorOf } from '../diff/anchor';\nsrc/core/model/normalize.ts:2:import { signatureOf } from '../diff/signature';\nsrc/core/model/normalize.ts:13:import { STEP_TYPES } from '../schema/types';\nsrc/app/App.tsx:2:import { align, AlignmentTooLargeError } from '../core/diff/align';\nsrc/app/App.tsx:3:import { divergences } from '../core/diff/divergence';\nsrc/app/App.tsx:4:import { STEP_TYPES, type StepType } from '../core/schema/types';\nsrc/app/App.tsx:5:import { readFiles, pickFiles } from '../io/readFiles';\nsrc/app/App.tsx:6:import { traceByKey, useApp } from '../state/store';\nsrc/app/App.tsx:7:import { CompareView } from '../ui/CompareView';\nsrc/app/App.tsx:8:import { EmptyState } from '../ui/EmptyState';\nsrc/app/App.tsx:9:import { RowInspector, StepInspector } from '../ui/Inspector';\nsrc/app/App.tsx:10:import { CompareStrips, SingleStrip, StripLegend } from '../ui/OverviewStrip';\nsrc/app/App.tsx:11:import { DivergenceRail, Filters, TraceList, TraceStats } from '../ui/Rail';\nsrc/app/App.tsx:12:import { Timeline } from '../ui/Timeline';\nsrc/app/App.tsx:13:import { TopBar } from '../ui/TopBar';\nsrc/app/App.tsx:14:import { matchesQuery } from '../ui/format';\nsrc/app/App.tsx:15:import { TrajectoryView } from '../ui/trajectory/TrajectoryView';\nsrc/app/App.tsx:16:import { DifferencesRail } from '../ui/trajectory/DifferencesRail';\nsrc/app/App.tsx:17:import { DifferenceInspector } from '../ui/trajectory/DifferenceInspector';\nsrc/fixtures/index.ts:1:import argDriftA from './arg-drift.a.json';\nsrc/fixtures/index.ts:2:import argDriftB from './arg-drift.b.json';\nsrc/fixtures/index.ts:3:import failureRecoveryA from './failure-recovery.a.json';\nsrc/fixtures/index.ts:4:import failureRecoveryB from './failure-recovery.b.json';\nsrc/fixtures/index.ts:5:import inconclusiveA from './inconclusive-retrieval.a.json';\nsrc/fixtures/index.ts:6:import inconclusiveB from './inconclusive-retrieval.b.json';\nsrc/fixtures/index.ts:7:import stopDecisionA from './stop-decision.a.json';\nsrc/fixtures/index.ts:8:import stopDecisionB from './stop-decision.b.json';\nsrc/ui/compareRows.ts:1:import type { AlignedRow, RowKind } from '../core/diff/align';\nsrc/ui/format.ts:1:import { toolStatusOf, type Step, type StepType } from '../core/schema/types';\nsrc/ui/Rail.tsx:2:import type { Divergence } from '../core/diff/divergence';\nsrc/ui/Rail.tsx:3:import type { NormalizedTrace, StepType } from '../core/schema/types';\nsrc/ui/Rail.tsx:4:import { STEP_TYPES } from '../core/schema/types';\nsrc/ui/Rail.tsx:5:import { useApp, type LoadedTrace } from '../state/store';\nsrc/ui/Rail.tsx:6:import { TYPE_LABEL, fmtDur, typeColor } from './format';\nsrc/ui/CompareView.tsx:3:import type { AlignedRow } from '../core/diff/align';\nsrc/ui/CompareView.tsx:4:import { buildDisplay, GLYPH } from './compareRows';\nsrc/ui/CompareView.tsx:5:import { GapCells, StepCells } from './StepCells';\nsrc/ui/OverviewStrip.tsx:1:import type { AlignedRow } from '../core/diff/align';\nsrc/ui/OverviewStrip.tsx:2:import type { NormalizedStep, StepType } from '../core/schema/types';\nsrc/ui/OverviewStrip.tsx:3:import { STEP_TYPES } from '../core/schema/types';\nsrc/ui/OverviewStrip.tsx:4:import { TYPE_LABEL, typeColor } from './format';\nsrc/ui/Timeline.tsx:3:import type { NormalizedStep } from '../core/schema/types';\nsrc/ui/Timeline.tsx:4:import { StepCells } from './StepCells';\nsrc/core/diff/align.ts:1:import type { NormalizedStep, NormalizedTrace } from '../schema/types';\nsrc/core/diff/align.ts:2:import { fieldDiff, type FieldDiff } from './fields';\nsrc/core/diff/align.ts:3:import { similarity } from './similarity';\nsrc/ui/TopBar.tsx:1:import type { Divergence } from '../core/diff/divergence';\nsrc/ui/TopBar.tsx:2:import type { NormalizedTrace } from '../core/schema/types';\nsrc/ui/TopBar.tsx:3:import { fmtDur } from './format';\nsrc/core/schema/validate.ts:2:import { SCHEMA_ID, type Trace } from './types';\nsrc/ui/StepCells.tsx:1:import type { NormalizedStep } from '../core/schema/types';\nsrc/ui/StepCells.tsx:2:import { TYPE_LABEL, fmtDur, isFailure, typeColor } from './format';\nsrc/ui/Inspector.tsx:2:import type { AlignedRow } from '../core/diff/align';\nsrc/ui/Inspector.tsx:3:import { auxiliaryDiff, type FieldDiff } from '../core/diff/fields';\nsrc/ui/Inspector.tsx:4:import { wordDiff } from '../core/diff/words';\nsrc/ui/Inspector.tsx:5:import { toolStatusOf, type NormalizedStep, type Step } from '../core/schema/types';\nsrc/ui/Inspector.tsx:6:import { GLYPH } from './compareRows';\nsrc/ui/Inspector.tsx:7:import { TYPE_LABEL, fmtDur, fmtOffset, fmtValue, fmtValueShort, prettyJson, typeColor } from './format';\nsrc/core/diff/similarity.ts:1:import { toolStatusOf, type NormalizedStep } from '../schema/types';\nsrc/core/diff/similarity.ts:2:import { canonicalJson, clamp01, eq, jaccard, leafPaths, tokens } from '../util/json';\nsrc/ui/trajectory/labels.ts:1:import type { AlignedRow } from '../../core/diff/align';\nsrc/ui/trajectory/labels.ts:2:import type { Divergence } from '../../core/diff/divergence';\nsrc/ui/trajectory/labels.ts:3:import type { FieldDiff } from '../../core/diff/fields';\nsrc/ui/trajectory/labels.ts:4:import { toolStatusOf, type NormalizedStep, type StopReason } from '../../core/schema/types';\nsrc/ui/trajectory/labels.ts:5:import { leafPaths } from '../../core/util/json';\nsrc/ui/trajectory/labels.ts:6:import { fmtValue, fmtValueShort } from '../format';\nsrc/ui/trajectory/DifferenceRegion.tsx:2:import type { AlignedRow } from '../../core/diff/align';\nsrc/ui/trajectory/DifferenceRegion.tsx:3:import type { NormalizedStep, NormalizedTrace } from '../../core/schema/types';\nsrc/ui/trajectory/DifferenceRegion.tsx:4:import { fmtValue, fmtValueShort } from '../format';\nsrc/ui/trajectory/DifferenceRegion.tsx:5:import { MARK_GLYPH, salientField, shortPath, soloValue, stepLabel } from './labels';\nsrc/ui/trajectory/segments.ts:1:import type { AlignedRow } from '../../core/diff/align';\nsrc/ui/trajectory/segments.ts:2:import type { Divergence } from '../../core/diff/divergence';\nsrc/ui/trajectory/segments.ts:3:import { leafPaths } from '../../core/util/json';\nsrc/ui/trajectory/segments.ts:4:import type { NormalizedStep } from '../../core/schema/types';\nsrc/ui/trajectory/segments.ts:5:import { canonicalJson } from '../../core/util/json';\nsrc/core/diff/fields.ts:1:import type { Step } from '../schema/types';\nsrc/core/diff/fields.ts:2:import { canonicalJson, leafPaths } from '../util/json';\nsrc/core/diff/fields.ts:3:import { semanticFieldsOf } from './signature';\nsrc/core/adapters/registry.ts:1:import { validateTrace } from '../schema/validate';\nsrc/core/adapters/registry.ts:2:import { nativeAdapter } from './native';\nsrc/core/adapters/registry.ts:3:import { claudeCodeAdapter } from './claude-code';\nsrc/core/adapters/registry.ts:4:import type { ImportResult, TraceAdapter } from './types';\nsrc/core/adapters/types.ts:1:import type { Trace } from '../schema/types';\nsrc/core/adapters/types.ts:2:import type { ValidationIssue } from '../schema/validate';\nsrc/ui/trajectory/TrajectoryView.tsx:2:import type { Alignment } from '../../core/diff/align';\nsrc/ui/trajectory/TrajectoryView.tsx:3:import type { Divergence } from '../../core/diff/divergence';\nsrc/ui/trajectory/TrajectoryView.tsx:4:import type { NormalizedTrace } from '../../core/schema/types';\nsrc/ui/trajectory/TrajectoryView.tsx:5:import { fmtDur } from '../format';\nsrc/ui/trajectory/TrajectoryView.tsx:6:import { DifferenceRegion } from './DifferenceRegion';\nsrc/ui/trajectory/TrajectoryView.tsx:7:import { MARK_GLYPH, plainAnchor, stepLabel } from './labels';\nsrc/ui/trajectory/TrajectoryView.tsx:8:import { buildSegments, type SameSegment } from './segments';\nsrc/core/adapters/native.ts:1:import { SCHEMA_ID, type Trace } from '../schema/types';\nsrc/core/adapters/native.ts:2:import type { TraceAdapter } from './types';\nsrc/ui/trajectory/DifferencesRail.tsx:1:import type { Divergence } from '../../core/diff/divergence';\nsrc/ui/trajectory/DifferencesRail.tsx:2:import { wordDiff } from '../../core/diff/words';\nsrc/ui/trajectory/DifferencesRail.tsx:3:import { describeDivergence, isReplacement } from './labels';\nsrc/core/diff/divergence.ts:1:import type { AlignedRow, Alignment } from './align';\nsrc/core/diff/divergence.ts:2:import { summarizeFields } from './fields';\nsrc/ui/trajectory/DifferenceInspector.tsx:2:import type { AlignedRow } from '../../core/diff/align';\nsrc/ui/trajectory/DifferenceInspector.tsx:3:import { auxiliaryDiff, type FieldDiff } from '../../core/diff/fields';\nsrc/ui/trajectory/DifferenceInspector.tsx:4:import type { NormalizedTrace } from '../../core/schema/types';\nsrc/ui/trajectory/DifferenceInspector.tsx:5:import { MetaTable } from '../Inspector';\nsrc/ui/trajectory/DifferenceInspector.tsx:6:import { fmtValue, fmtDur, prettyJson } from '../format';\nsrc/ui/trajectory/DifferenceInspector.tsx:7:import { wordDiff } from '../../core/diff/words';\nsrc/ui/trajectory/DifferenceInspector.tsx:8:import { describeChange, isOkUnknown, isReplacement, stepLabel, subjectOf } from './labels';\nsrc/core/diff/anchor.ts:1:import type { Step } from '../schema/types';\nsrc/core/diff/signature.ts:1:import { toolStatusOf, type Step } from '../schema/types';\nsrc/core/diff/signature.ts:2:import { canonicalJson, hash32 } from '../util/json';\nsrc/core/adapters/claude-code/sessions.ts:1:import { isHumanPrompt, type CCRecord } from './records';\nsrc/core/adapters/claude-code/map.ts:1:import { SCHEMA_ID, type Step, type ToolStatus, type Trace } from '../../schema/types';\nsrc/core/adapters/claude-code/map.ts:2:import { groupTurns, type Turn } from './group';\nsrc/core/adapters/claude-code/map.ts:3:import { redact, type RedactOptions } from './redact';\nsrc/core/adapters/claude-code/group.ts:1:import { blocksOf, isAssistant, type CCBlock, type CCRecord } from './records';\nsrc/core/adapters/claude-code/index.ts:1:import { toolStatusOf, type Trace } from '../../schema/types';\nsrc/core/adapters/claude-code/index.ts:2:import type { ValidationIssue } from '../../schema/validate';\nsrc/core/adapters/claude-code/index.ts:3:import type { TraceAdapter } from '../types';\nsrc/core/adapters/claude-code/index.ts:4:import { mapRecords, type MapResult } from './map';\nsrc/core/adapters/claude-code/index.ts:5:import { parseJsonl, type CCRecord } from './records';\nsrc/core/adapters/claude-code/index.ts:6:import { splitRuns } from './sessions';\nsrc/core/adapters/claude-code/index.ts:7:import type { RedactLevel } from './redact';",
+        "numLines": 129,
+        "totalLines": 129
+      },
+      "t": "2026-08-27T21:46:09.612Z",
+      "dur": 566
+    },
+    {
+      "id": "m:msg_011CeTzB51GfCewaAvUUV3e5",
+      "type": "model",
+      "model": "claude-sonnet-5",
+      "output": "",
+      "stopReason": "tool_use",
+      "tokens": {
+        "in": 2,
+        "out": 1683
+      },
+      "t": "2026-08-27T21:46:12.127Z"
+    },
+    {
+      "id": "c:toolu_01R5pJvBWoQQG6UMwdNhC1Xt",
+      "type": "tool_call",
+      "callId": "toolu_01R5pJvBWoQQG6UMwdNhC1Xt",
+      "name": "Grep",
+      "args": {
+        "pattern": "^import",
+        "path": "/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/index.ts",
+        "output_mode": "content",
+        "-n": true
+      },
+      "t": "2026-08-27T21:46:12.127Z"
+    },
+    {
+      "id": "c:toolu_01SNgPCw5kxj9wBZY4HEuEUN",
+      "type": "tool_call",
+      "callId": "toolu_01SNgPCw5kxj9wBZY4HEuEUN",
+      "name": "Grep",
+      "args": {
+        "pattern": "^import",
+        "path": "/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/io/readFiles.ts",
+        "output_mode": "content",
+        "-n": true
+      },
+      "t": "2026-08-27T21:46:12.127Z"
+    },
+    {
+      "id": "c:toolu_01CsjsbZLkc8kaK9aMhBTVSp",
+      "type": "tool_call",
+      "callId": "toolu_01CsjsbZLkc8kaK9aMhBTVSp",
+      "name": "Grep",
+      "args": {
+        "pattern": "^import",
+        "path": "/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/schema/types.ts",
+        "output_mode": "content",
+        "-n": true
+      },
+      "t": "2026-08-27T21:46:12.127Z"
+    },
+    {
+      "id": "c:toolu_01P4vymqh34ZRZ6Jc84mWCcg",
+      "type": "tool_call",
+      "callId": "toolu_01P4vymqh34ZRZ6Jc84mWCcg",
+      "name": "Grep",
+      "args": {
+        "pattern": "^import",
+        "path": "/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/util/json.ts",
+        "output_mode": "content",
+        "-n": true
+      },
+      "t": "2026-08-27T21:46:12.127Z"
+    },
+    {
+      "id": "c:toolu_017UDx2FVTwU7frZyRVrKyzf",
+      "type": "tool_call",
+      "callId": "toolu_017UDx2FVTwU7frZyRVrKyzf",
+      "name": "Grep",
+      "args": {
+        "pattern": "^import",
+        "path": "/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/app/main.tsx",
+        "output_mode": "content",
+        "-n": true
+      },
+      "t": "2026-08-27T21:46:12.127Z"
+    },
+    {
+      "id": "c:toolu_01FjSdLKcGr3B1go5iGuvsPe",
+      "type": "tool_call",
+      "callId": "toolu_01FjSdLKcGr3B1go5iGuvsPe",
+      "name": "Grep",
+      "args": {
+        "pattern": "^import",
+        "path": "/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/adapters/claude-code/records.ts",
+        "output_mode": "content",
+        "-n": true
+      },
+      "t": "2026-08-27T21:46:12.127Z"
+    },
+    {
+      "id": "c:toolu_01XrZmYoXncgWJ7vCgT2jMwW",
+      "type": "tool_call",
+      "callId": "toolu_01XrZmYoXncgWJ7vCgT2jMwW",
+      "name": "Grep",
+      "args": {
+        "pattern": "^import",
+        "path": "/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/adapters/claude-code/redact.ts",
+        "output_mode": "content",
+        "-n": true
+      },
+      "t": "2026-08-27T21:46:12.127Z"
+    },
+    {
+      "id": "c:toolu_01JLxJSDYNwyZaaoFY7iFp87",
+      "type": "tool_call",
+      "callId": "toolu_01JLxJSDYNwyZaaoFY7iFp87",
+      "name": "Grep",
+      "args": {
+        "pattern": "^import",
+        "path": "/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/schema/validate.ts",
+        "output_mode": "content",
+        "-n": true
+      },
+      "t": "2026-08-27T21:46:12.127Z"
+    },
+    {
+      "id": "r:toolu_01R5pJvBWoQQG6UMwdNhC1Xt",
+      "type": "tool_result",
+      "callId": "toolu_01R5pJvBWoQQG6UMwdNhC1Xt",
+      "name": "Grep",
+      "status": "unknown",
+      "result": {
+        "mode": "content",
+        "numFiles": 0,
+        "filenames": [],
+        "content": "",
+        "numLines": 0,
+        "totalLines": 0
+      },
+      "t": "2026-08-27T21:46:15.064Z",
+      "dur": 2937
+    },
+    {
+      "id": "r:toolu_01SNgPCw5kxj9wBZY4HEuEUN",
+      "type": "tool_result",
+      "callId": "toolu_01SNgPCw5kxj9wBZY4HEuEUN",
+      "name": "Grep",
+      "status": "unknown",
+      "result": {
+        "mode": "content",
+        "numFiles": 0,
+        "filenames": [],
+        "content": "",
+        "numLines": 0,
+        "totalLines": 0
+      },
+      "t": "2026-08-27T21:46:15.420Z",
+      "dur": 3293
+    },
+    {
+      "id": "r:toolu_01CsjsbZLkc8kaK9aMhBTVSp",
+      "type": "tool_result",
+      "callId": "toolu_01CsjsbZLkc8kaK9aMhBTVSp",
+      "name": "Grep",
+      "status": "unknown",
+      "result": {
+        "mode": "content",
+        "numFiles": 0,
+        "filenames": [],
+        "content": "",
+        "numLines": 0,
+        "totalLines": 0
+      },
+      "t": "2026-08-27T21:46:18.071Z",
+      "dur": 5944
+    },
+    {
+      "id": "r:toolu_01P4vymqh34ZRZ6Jc84mWCcg",
+      "type": "tool_result",
+      "callId": "toolu_01P4vymqh34ZRZ6Jc84mWCcg",
+      "name": "Grep",
+      "status": "unknown",
+      "result": {
+        "mode": "content",
+        "numFiles": 0,
+        "filenames": [],
+        "content": "",
+        "numLines": 0,
+        "totalLines": 0
+      },
+      "t": "2026-08-27T21:46:18.087Z",
+      "dur": 5960
+    },
+    {
+      "id": "r:toolu_017UDx2FVTwU7frZyRVrKyzf",
+      "type": "tool_result",
+      "callId": "toolu_017UDx2FVTwU7frZyRVrKyzf",
+      "name": "Grep",
+      "status": "unknown",
+      "result": {
+        "mode": "content",
+        "numFiles": 0,
+        "filenames": [],
+        "content": "1:import { StrictMode } from 'react';\n2:import { createRoot } from 'react-dom/client';\n3:import '../ui/tokens.css';\n4:import '../ui/ui.css';\n5:import { App } from './App';",
+        "numLines": 5,
+        "totalLines": 5
+      },
+      "t": "2026-08-27T21:46:18.693Z",
+      "dur": 6566
+    },
+    {
+      "id": "r:toolu_01FjSdLKcGr3B1go5iGuvsPe",
+      "type": "tool_result",
+      "callId": "toolu_01FjSdLKcGr3B1go5iGuvsPe",
+      "name": "Grep",
+      "status": "unknown",
+      "result": {
+        "mode": "content",
+        "numFiles": 0,
+        "filenames": [],
+        "content": "",
+        "numLines": 0,
+        "totalLines": 0
+      },
+      "t": "2026-08-27T21:46:21.062Z",
+      "dur": 8935
+    },
+    {
+      "id": "r:toolu_01XrZmYoXncgWJ7vCgT2jMwW",
+      "type": "tool_result",
+      "callId": "toolu_01XrZmYoXncgWJ7vCgT2jMwW",
+      "name": "Grep",
+      "status": "unknown",
+      "result": {
+        "mode": "content",
+        "numFiles": 0,
+        "filenames": [],
+        "content": "",
+        "numLines": 0,
+        "totalLines": 0
+      },
+      "t": "2026-08-27T21:46:21.063Z",
+      "dur": 8936
+    },
+    {
+      "id": "r:toolu_01JLxJSDYNwyZaaoFY7iFp87",
+      "type": "tool_result",
+      "callId": "toolu_01JLxJSDYNwyZaaoFY7iFp87",
+      "name": "Grep",
+      "status": "unknown",
+      "result": {
+        "mode": "content",
+        "numFiles": 0,
+        "filenames": [],
+        "content": "1:import { z } from 'zod';\n2:import { SCHEMA_ID, type Trace } from './types';",
+        "numLines": 2,
+        "totalLines": 2
+      },
+      "t": "2026-08-27T21:46:21.764Z",
+      "dur": 9637
+    },
+    {
+      "id": "m:msg_011CeTzBxVP2hQ9aVSdJtcxk",
+      "type": "model",
+      "model": "claude-sonnet-5",
+      "output": "",
+      "stopReason": "tool_use",
+      "tokens": {
+        "in": 2,
+        "out": 1320
+      },
+      "t": "2026-08-27T21:46:30.157Z"
+    },
+    {
+      "id": "c:toolu_01BetqsMkGUAKafN58cr4E9M",
+      "type": "tool_call",
+      "callId": "toolu_01BetqsMkGUAKafN58cr4E9M",
+      "name": "Grep",
+      "args": {
+        "pattern": "^import",
+        "path": "/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/diff/words.ts",
+        "output_mode": "content",
+        "-n": true
+      },
+      "t": "2026-08-27T21:46:30.157Z"
+    },
+    {
+      "id": "c:toolu_01FiCmtNWPCMTpsVxqgk513P",
+      "type": "tool_call",
+      "callId": "toolu_01FiCmtNWPCMTpsVxqgk513P",
+      "name": "Grep",
+      "args": {
+        "pattern": "^import",
+        "path": "/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/model/normalize.ts",
+        "output_mode": "content",
+        "-n": true
+      },
+      "t": "2026-08-27T21:46:30.157Z"
+    },
+    {
+      "id": "r:toolu_01BetqsMkGUAKafN58cr4E9M",
+      "type": "tool_result",
+      "callId": "toolu_01BetqsMkGUAKafN58cr4E9M",
+      "name": "Grep",
+      "status": "unknown",
+      "result": {
+        "mode": "content",
+        "numFiles": 0,
+        "filenames": [],
+        "content": "",
+        "numLines": 0,
+        "totalLines": 0
+      },
+      "t": "2026-08-27T21:46:30.712Z",
+      "dur": 555
+    },
+    {
+      "id": "r:toolu_01FiCmtNWPCMTpsVxqgk513P",
+      "type": "tool_result",
+      "callId": "toolu_01FiCmtNWPCMTpsVxqgk513P",
+      "name": "Grep",
+      "status": "unknown",
+      "result": {
+        "mode": "content",
+        "numFiles": 0,
+        "filenames": [],
+        "content": "1:import { anchorOf } from '../diff/anchor';\n2:import { signatureOf } from '../diff/signature';\n3:import {\n6:import type {\n13:import { STEP_TYPES } from '../schema/types';",
+        "numLines": 5,
+        "totalLines": 5
+      },
+      "t": "2026-08-27T21:46:33.110Z",
+      "dur": 2953
+    },
+    {
+      "id": "m:msg_011CeTzCod7TCLkjhtCRtvEd",
+      "type": "model",
+      "model": "claude-sonnet-5",
+      "output": "",
+      "stopReason": "tool_use",
+      "tokens": {
+        "in": 2,
+        "out": 262
+      },
+      "t": "2026-08-27T21:46:36.147Z"
+    },
+    {
+      "id": "c:toolu_014McA8uHnHW7iHPxKYr7x6j",
+      "type": "tool_call",
+      "callId": "toolu_014McA8uHnHW7iHPxKYr7x6j",
+      "name": "Read",
+      "args": {
+        "file_path": "/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/model/normalize.ts",
+        "limit": 15
+      },
+      "t": "2026-08-27T21:46:36.147Z"
+    },
+    {
+      "id": "r:toolu_014McA8uHnHW7iHPxKYr7x6j",
+      "type": "tool_result",
+      "callId": "toolu_014McA8uHnHW7iHPxKYr7x6j",
+      "name": "Read",
+      "status": "unknown",
+      "result": {
+        "type": "text",
+        "file": {
+          "filePath": "/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/model/normalize.ts",
+          "content": "import { anchorOf } from '../diff/anchor';\nimport { signatureOf } from '../diff/signature';\nimport {\n  toolStatusOf,\n} from '../schema/types';\nimport type {\n  NormalizedStep,\n  NormalizedTrace,\n  Step,\n  StepType,\n  Trace,\n} from '../schema/types';\nimport { STEP_TYPES } from '../schema/types';\n\n/**",
+          "numLines": 15,
+          "startLine": 1,
+          "totalLines": 177
+        }
+      },
+      "t": "2026-08-27T21:46:36.166Z",
+      "dur": 19
+    },
+    {
+      "id": "m:msg_011CeTzD25iHsV4LZ3Er9sJQ",
+      "type": "model",
+      "model": "claude-sonnet-5",
+      "output": "",
+      "stopReason": "tool_use",
+      "tokens": {
+        "in": 2,
+        "out": 2619
+      },
+      "t": "2026-08-27T21:46:54.289Z"
+    },
+    {
+      "id": "c:toolu_01NtS7b9yhWTDqobgMK56RYH",
+      "type": "tool_call",
+      "callId": "toolu_01NtS7b9yhWTDqobgMK56RYH",
+      "name": "Read",
+      "args": {
+        "file_path": "/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/index.ts"
+      },
+      "t": "2026-08-27T21:46:54.289Z"
+    },
+    {
+      "id": "r:toolu_01NtS7b9yhWTDqobgMK56RYH",
+      "type": "tool_result",
+      "callId": "toolu_01NtS7b9yhWTDqobgMK56RYH",
+      "name": "Read",
+      "status": "unknown",
+      "result": {
+        "type": "text",
+        "file": {
+          "filePath": "/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src/core/index.ts",
+          "content": "/**\n * core/ — pure TypeScript. Zero React, zero DOM.\n *\n * This boundary is load-bearing: it is what makes the adapter story real\n * rather than aspirational, and it is what lets the alignment be tested\n * against plain fixtures.\n */\n\nexport * from './schema/types';\nexport { validateTrace, traceSchema, stepSchema } from './schema/validate';\nexport type { ValidationIssue, ValidateResult } from './schema/validate';\n\nexport type { TraceAdapter, ImportResult } from './adapters/types';\nexport { register, listAdapters, detectAdapter, importTrace } from './adapters/registry';\nexport { nativeAdapter } from './adapters/native';\n\nexport { normalize, toMs } from './model/normalize';\n\nexport { anchorOf, rootOf } from './diff/anchor';\nexport { signatureOf, semanticFieldsOf } from './diff/signature';\nexport { similarity, argSimilarity } from './diff/similarity';\nexport {\n  align,\n  GAP,\n  M_BASE,\n  M_SIM,\n  MAX_CELLS,\n  PREFERS_PAIRING,\n  AlignmentTooLargeError,\n} from './diff/align';\nexport type { Alignment, AlignedRow, RowKind } from './diff/align';\nexport { fieldDiff, auxiliaryDiff, summarizeFields } from './diff/fields';\nexport type { FieldDiff, FieldOp } from './diff/fields';\nexport { divergences } from './diff/divergence';\nexport type { Divergence, DivergenceKind } from './diff/divergence';\nexport { wordDiff, tokenizeWords } from './diff/words';\nexport type { WordSpan, WordOp } from './diff/words';\n",
+          "numLines": 38,
+          "startLine": 1,
+          "totalLines": 38
+        }
+      },
+      "t": "2026-08-27T21:46:54.299Z",
+      "dur": 10
+    },
+    {
+      "id": "m:msg_011CeTzEMWXpMFn7X6LCKAUn",
+      "type": "model",
+      "model": "claude-sonnet-5",
+      "output": "",
+      "stopReason": "tool_use",
+      "tokens": {
+        "in": 2,
+        "out": 588
+      },
+      "t": "2026-08-27T21:47:00.158Z"
+    },
+    {
+      "id": "c:toolu_01JAkhUq8dKGsH8iHShRXzGf",
+      "type": "tool_call",
+      "callId": "toolu_01JAkhUq8dKGsH8iHShRXzGf",
+      "name": "Grep",
+      "args": {
+        "pattern": "from ['\"](\\.\\./)*core['\"]|from ['\"]\\.\\.?/core/index",
+        "path": "/private/tmp/claude-501/~-Documents/ef1fd617-7d0f-4e87-8c76-3bea1e198a6b/scratchpad/exp/repo2/src",
+        "output_mode": "content",
+        "glob": "*.{ts,tsx}"
+      },
+      "t": "2026-08-27T21:47:00.158Z"
+    },
+    {
+      "id": "r:toolu_01JAkhUq8dKGsH8iHShRXzGf",
+      "type": "tool_result",
+      "callId": "toolu_01JAkhUq8dKGsH8iHShRXzGf",
+      "name": "Grep",
+      "status": "unknown",
+      "result": {
+        "mode": "content",
+        "numFiles": 0,
+        "filenames": [],
+        "content": "",
+        "numLines": 0,
+        "totalLines": 0
+      },
+      "t": "2026-08-27T21:47:00.181Z",
+      "dur": 23
+    },
+    {
+      "id": "m:msg_011CeTzEnzDjuLV9g2Cp7NoT",
+      "type": "model",
+      "model": "claude-sonnet-5",
+      "output": "Nothing imports `core/index.ts` — it's an unused barrel export. Now compiling the full report.\n\nNow let's count how many files import each file (in-degree), to find the most-imported file.",
+      "stopReason": "tool_use",
+      "tokens": {
+        "in": 2,
+        "out": 311
+      },
+      "t": "2026-08-27T21:47:03.214Z"
+    },
+    {
+      "id": "c:toolu_011pt6hFcawJUXsi9KAuAgbG",
+      "type": "tool_call",
+      "callId": "toolu_011pt6hFcawJUXsi9KAuAgbG",
+      "name": "Bash",
+      "args": {
+        "command": "grep -rhoE \"from ['\\\"]\\.[^'\\\"]+['\\\"]\" --include='*.ts' --include='*.tsx' src | sed -E \"s/from ['\\\"](.*)['\\\"]/\\1/\" | sort | uniq -c | sort -rn | head -30",
+        "description": "Count relative import occurrences across all TS/TSX files"
+      },
+      "t": "2026-08-27T21:47:03.214Z"
+    },
+    {
+      "id": "r:toolu_011pt6hFcawJUXsi9KAuAgbG",
+      "type": "tool_result",
+      "callId": "toolu_011pt6hFcawJUXsi9KAuAgbG",
+      "name": "Bash",
+      "status": "success",
+      "result": {
+        "stdout": "  12 ../core/schema/types\n  10 ../schema/types\n   5 ./records\n   5 ./format\n   5 ../core/diff/align\n   5 ../../core/schema/types\n   5 ../../core/diff/align\n   4 ./labels\n   4 ../format\n   4 ../../core/diff/divergence\n   3 ./types\n   3 ./redact\n   3 ../util/json\n   3 ../state/store\n   3 ../core/diff/divergence\n   3 ../../core/util/json\n   2 ./sessions\n   2 ./segments\n   2 ./schema/validate\n   2 ./map\n   2 ./group\n   2 ./fields\n   2 ./diff/words\n   2 ./diff/fields\n   2 ./diff/divergence\n   2 ./diff/align\n   2 ./compareRows\n   2 ./StepCells\n   2 ../schema/validate\n   2 ../io/readFiles",
+        "stderr": "",
+        "interrupted": false,
+        "isImage": false,
+        "noOutputExpected": false
+      },
+      "t": "2026-08-27T21:47:06.254Z",
+      "dur": 3040
+    },
+    {
+      "id": "m:msg_011CeTzFEYcaAEo6f1BWYPZY",
+      "type": "model",
+      "model": "claude-sonnet-5",
+      "output": "# Import Dependency Report — `src/`\n\n**42 TypeScript files.** For each, the files under `src/` it imports from (paths relative to `src/`):\n\n## app/\n- **app/App.tsx** → core/diff/align.ts, core/diff/divergence.ts, core/schema/types.ts, io/readFiles.ts, state/store.ts, ui/CompareView.tsx, ui/EmptyState.tsx, ui/Inspector.tsx, ui/OverviewStrip.tsx, ui/Rail.tsx, ui/Timeline.tsx, ui/TopBar.tsx, ui/format.ts, ui/trajectory/TrajectoryView.tsx, ui/trajectory/DifferencesRail.tsx, ui/trajectory/DifferenceInspector.tsx\n- **app/main.tsx** → app/App.tsx\n\n## core/adapters/\n- **core/adapters/claude-code/group.ts** → core/adapters/claude-code/records.ts\n- **core/adapters/claude-code/index.ts** → core/schema/types.ts, core/schema/validate.ts, core/adapters/types.ts, core/adapters/claude-code/map.ts, core/adapters/claude-code/records.ts, core/adapters/claude-code/sessions.ts, core/adapters/claude-code/redact.ts\n- **core/adapters/claude-code/map.ts** → core/schema/types.ts, core/adapters/claude-code/group.ts, core/adapters/claude-code/redact.ts\n- **core/adapters/claude-code/records.ts** → (none internal)\n- **core/adapters/claude-code/redact.ts** → (none internal)\n- **core/adapters/claude-code/sessions.ts** → core/adapters/claude-code/records.ts\n- **core/adapters/native.ts** → core/schema/types.ts, core/adapters/types.ts\n- **core/adapters/registry.ts** → core/schema/validate.ts, core/adapters/native.ts, core/adapters/claude-code/index.ts, core/adapters/types.ts\n- **core/adapters/types.ts** → core/schema/types.ts, core/schema/validate.ts\n\n## core/diff/\n- **core/diff/align.ts** → core/schema/types.ts, core/diff/fields.ts, core/diff/similarity.ts\n- **core/diff/anchor.ts** → core/schema/types.ts\n- **core/diff/divergence.ts** → core/diff/align.ts, core/diff/fields.ts\n- **core/diff/fields.ts** → core/schema/types.ts, core/util/json.ts, core/diff/signature.ts\n- **core/diff/signature.ts** → core/schema/types.ts, core/util/json.ts\n- **core/diff/similarity.ts** → core/schema/types.ts, core/util/json.ts\n- **core/diff/words.ts** → (none internal)\n\n## core/ (other)\n- **core/index.ts** → core/schema/types.ts, core/schema/validate.ts, core/adapters/types.ts, core/adapters/registry.ts, core/adapters/native.ts, core/model/normalize.ts, core/diff/anchor.ts, core/diff/signature.ts, core/diff/similarity.ts, core/diff/align.ts, core/diff/fields.ts, core/diff/divergence.ts, core/diff/words.ts *(all via `export … from`; this barrel file is not imported by anything else)*\n- **core/model/normalize.ts** → core/diff/anchor.ts, core/diff/signature.ts, core/schema/types.ts\n- **core/schema/types.ts** → (none internal)\n- **core/schema/validate.ts** → core/schema/types.ts\n- **core/util/json.ts** → (none internal)\n\n## fixtures/ , io/\n- **fixtures/index.ts** → (none internal — only imports `.json` fixture files)\n- **io/readFiles.ts** → (none internal)\n\n## state/\n- **state/store.ts** → core/adapters/registry.ts, core/model/normalize.ts, core/schema/types.ts, core/schema/validate.ts\n\n## ui/\n- **ui/CompareView.tsx** → core/diff/align.ts, ui/compareRows.ts, ui/StepCells.tsx\n- **ui/EmptyState.tsx** → fixtures/index.ts, state/store.ts, io/readFiles.ts\n- **ui/Inspector.tsx** → core/diff/align.ts, core/diff/fields.ts, core/diff/words.ts, core/schema/types.ts, ui/compareRows.ts, ui/format.ts\n- **ui/OverviewStrip.tsx** → core/diff/align.ts, core/schema/types.ts, ui/format.ts\n- **ui/Rail.tsx** → core/diff/divergence.ts, core/schema/types.ts, state/store.ts, ui/format.ts\n- **ui/StepCells.tsx** → core/schema/types.ts, ui/format.ts\n- **ui/Timeline.tsx** → core/schema/types.ts, ui/StepCells.tsx\n- **ui/TopBar.tsx** → core/diff/divergence.ts, core/schema/types.ts, ui/format.ts\n- **ui/compareRows.ts** → core/diff/align.ts\n- **ui/format.ts** → core/schema/types.ts\n- **ui/trajectory/DifferenceInspector.tsx** → core/diff/align.ts, core/diff/fields.ts, core/diff/words.ts, core/schema/types.ts, ui/Inspector.tsx, ui/format.ts, ui/trajectory/labels.ts\n- **ui/trajectory/DifferenceRegion.tsx** → core/diff/align.ts, core/schema/types.ts, ui/format.ts, ui/trajectory/labels.ts\n- **ui/trajectory/DifferencesRail.tsx** → core/diff/divergence.ts, core/diff/words.ts, ui/trajectory/labels.ts\n- **ui/trajectory/TrajectoryView.tsx** → core/diff/align.ts, core/diff/divergence.ts, core/schema/types.ts, ui/format.ts, ui/trajectory/DifferenceRegion.tsx, ui/trajectory/labels.ts, ui/trajectory/segments.ts\n- **ui/trajectory/labels.ts** → core/diff/align.ts, core/diff/divergence.ts, core/diff/fields.ts, core/schema/types.ts, core/util/json.ts, ui/format.ts\n- **ui/trajectory/segments.ts** → core/diff/align.ts, core/diff/divergence.ts, core/schema/types.ts, core/util/json.ts\n\n---\n\n## Most-imported file\n\n**`core/schema/types.ts`** — imported by **25** other files (26 counting the unused `core/index.ts` barrel). It's the shared vocabulary (`NormalizedTrace`, `Step`, `StepType`, `Trace`, `STEP_TYPES`, etc.) that virtually every layer — adapters, diff engine, state, and UI — depends on directly.\n\nRunners-up: `ui/format.ts` (10 importers) and `core/diff/align.ts` (11, or 12 with the barrel).",
+      "stopReason": "end_turn",
+      "tokens": {
+        "in": 2,
+        "out": 4313
+      },
+      "t": "2026-08-27T21:47:21.264Z"
+    }
+  ]
+}

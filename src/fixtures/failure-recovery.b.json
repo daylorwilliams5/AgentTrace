@@ -3,7 +3,11 @@
   "id": "failure-recovery-b",
   "name": "changelog-post B",
   "task": "Fetch the changelog for release 2.4 and post the highlights to #releases.",
-  "agent": { "name": "release-bot", "version": "3.0.1", "model": "synthetic-model-1" },
+  "agent": {
+    "name": "release-bot",
+    "version": "3.0.1",
+    "model": "synthetic-model-1"
+  },
   "startedAt": 1756201000000,
   "endedAt": 1756201021400,
   "status": "failure",
@@ -22,7 +26,9 @@
       "t": 1756201000800,
       "callId": "k1",
       "name": "fetch_page",
-      "args": { "url": "https://docs.example.invalid/changelog/2.4" }
+      "args": {
+        "url": "https://docs.example.invalid/changelog/2.4"
+      }
     },
     {
       "id": "b2",
@@ -31,8 +37,11 @@
       "dur": 2450,
       "callId": "k1",
       "name": "fetch_page",
-      "ok": false,
-      "error": { "kind": "HttpError", "message": "503 Service Unavailable" }
+      "status": "failure",
+      "error": {
+        "kind": "HttpError",
+        "message": "503 Service Unavailable"
+      }
     },
     {
       "id": "b3",
@@ -59,7 +68,9 @@
       "attempt": 1,
       "callId": "k2",
       "name": "fetch_page",
-      "args": { "url": "https://docs.example.invalid/changelog/2.4" }
+      "args": {
+        "url": "https://docs.example.invalid/changelog/2.4"
+      }
     },
     {
       "id": "b6",
@@ -68,8 +79,11 @@
       "dur": 2420,
       "callId": "k2",
       "name": "fetch_page",
-      "ok": false,
-      "error": { "kind": "HttpError", "message": "503 Service Unavailable" }
+      "status": "failure",
+      "error": {
+        "kind": "HttpError",
+        "message": "503 Service Unavailable"
+      }
     },
     {
       "id": "b7",
@@ -95,7 +109,9 @@
       "attempt": 2,
       "callId": "k3",
       "name": "fetch_page",
-      "args": { "url": "https://docs.example.invalid/changelog/2.4" }
+      "args": {
+        "url": "https://docs.example.invalid/changelog/2.4"
+      }
     },
     {
       "id": "b10",
@@ -104,8 +120,11 @@
       "dur": 2580,
       "callId": "k3",
       "name": "fetch_page",
-      "ok": false,
-      "error": { "kind": "HttpError", "message": "503 Service Unavailable" }
+      "status": "failure",
+      "error": {
+        "kind": "HttpError",
+        "message": "503 Service Unavailable"
+      }
     },
     {
       "id": "b11",

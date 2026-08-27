@@ -1,5 +1,8 @@
 import { anchorOf } from '../diff/anchor';
 import { signatureOf } from '../diff/signature';
+import {
+  toolStatusOf,
+} from '../schema/types';
 import type {
   NormalizedStep,
   NormalizedTrace,
@@ -35,7 +38,7 @@ export function normalize(trace: Trace): NormalizedTrace {
     let resolvedName: string | undefined;
     let pairedIndex: number | undefined;
     let callArgs: unknown;
-    let resultOk: boolean | undefined;
+    let resultStatus: import('../schema/types').ToolStatus | undefined;
 
     if (step.type === 'tool_result') {
       const ci = callIndexById.get(step.callId);
@@ -51,7 +54,7 @@ export function normalize(trace: Trace): NormalizedTrace {
       const ri = resultIndexByCallId.get(step.callId);
       if (ri !== undefined) {
         const res = trace.steps[ri];
-        if (res.type === 'tool_result') resultOk = res.ok;
+        if (res.type === 'tool_result') resultStatus = toolStatusOf(res);
         pairedIndex = ri;
       }
     }
@@ -60,19 +63,23 @@ export function normalize(trace: Trace): NormalizedTrace {
     const ordinal = anchorCounts.get(anchor) ?? 0;
     anchorCounts.set(anchor, ordinal + 1);
 
+    // A model turn's observable evidence when it produced no visible output.
+    const emittedTools = step.type === 'model' ? emittedToolAnchors(trace.steps, index) : undefined;
+
     const ts = toMs(step.t);
     return {
       step,
       index,
       anchor,
-      signature: signatureOf(step),
+      signature: signatureOf(step, emittedTools ? { emittedTools } : undefined),
       ordinal,
       depth: depthOf(step, trace.steps, byId),
       offsetMs: ts !== undefined && start !== undefined ? ts - start : undefined,
       label: step.label ?? deriveLabel(step, resolvedName),
       pairedIndex,
       callArgs,
-      resultOk,
+      resultStatus,
+      emittedTools,
     };
   });
 
@@ -80,6 +87,22 @@ export function normalize(trace: Trace): NormalizedTrace {
 }
 
 // ---------------------------------------------------------------------------
+
+/**
+ * Anchors of the maximal run of tool_call steps immediately following `i`.
+ *
+ * Positional, because agenttrace/v1 has no back-reference from a model step to
+ * the calls it produced: a turn's calls are emitted directly after it. Total
+ * work is linear across the trace — each tool_call is scanned by at most the one
+ * model step that precedes its run.
+ */
+function emittedToolAnchors(steps: Step[], i: number): string[] {
+  const out: string[] = [];
+  for (let j = i + 1; j < steps.length && steps[j].type === 'tool_call'; j++) {
+    out.push(anchorOf(steps[j]));
+  }
+  return out;
+}
 
 function depthOf(step: Step, all: Step[], byId: Map<string, number>): number {
   let depth = 0;
@@ -107,7 +130,9 @@ function deriveLabel(step: Step, resolvedName?: string): string {
       return step.name;
     case 'tool_result': {
       const name = step.name ?? resolvedName ?? 'result';
-      if (!step.ok) return `${name} failed${step.error?.kind ? ` — ${step.error.kind}` : ''}`;
+      const st = toolStatusOf(step);
+      if (st === 'failure') return `${name} failed${step.error?.kind ? ` — ${step.error.kind}` : ''}`;
+      if (st === 'unknown') return `${name} — status not reported`;
       return name;
     }
     case 'state':
@@ -161,7 +186,10 @@ function statsOf(trace: Trace, steps: NormalizedStep[], start?: number) {
     total: steps.length,
     byType,
     tools: byType.tool_call,
-    errors: byType.error + steps.filter((s) => s.step.type === 'tool_result' && !s.step.ok).length,
+    // Only CONFIRMED failures count. `unknown` is not a failure.
+    errors:
+      byType.error +
+      steps.filter((s) => s.step.type === 'tool_result' && toolStatusOf(s.step) === 'failure').length,
     retries: byType.retry,
     wallMs: start !== undefined && end !== undefined ? end - start : undefined,
   };

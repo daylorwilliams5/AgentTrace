@@ -19,8 +19,8 @@ describe('field diff', () => {
   });
 
   it('descends into nested results', () => {
-    const a: Step = { id: 'a', type: 'tool_result', callId: 'c', ok: true, result: { rows: [{ id: 1 }] } };
-    const b: Step = { id: 'b', type: 'tool_result', callId: 'k', ok: true, result: { rows: [{ id: 2 }] } };
+    const a: Step = { id: 'a', type: 'tool_result', callId: 'c', status: 'success', result: { rows: [{ id: 1 }] } };
+    const b: Step = { id: 'b', type: 'tool_result', callId: 'k', status: 'success', result: { rows: [{ id: 2 }] } };
     expect(fieldDiff(a, b)).toEqual([
       { path: 'result.rows[0].id', op: 'changed', before: 1, after: 2 },
     ]);
