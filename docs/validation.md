@@ -18,7 +18,7 @@ file, one prompt per session.
 
 An earlier attempt was discarded: a concurrent Claude Code session modified
 three files mid-experiment, breaking the "same tree" control. The frozen-snapshot
-protocol exists because of that.
+protocol was adopted in response.
 
 | pair | task | controlled change |
 |---|---|---|
@@ -87,7 +87,7 @@ navigation granularity.
 `instruction-change` was unchanged by the fix: its single empty-output row stays
 identical because both runs emitted `Bash`.
 
-At the checkpoint: **149 tests passing; typecheck, lint and build clean.**
+At the checkpoint: **153 tests passing; typecheck, lint and build clean.**
 
 ---
 

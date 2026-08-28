@@ -2,6 +2,27 @@
   "name": "agenttrace",
   "private": true,
   "version": "0.0.0",
+  "description": "Compare AI-agent execution trajectories and surface where their observable behavior first diverges.",
+  "license": "MIT",
+  "keywords": [
+    "ai-agents",
+    "agent-evals",
+    "tracing",
+    "diff",
+    "sequence-alignment",
+    "needleman-wunsch",
+    "claude-code",
+    "observability-free",
+    "developer-tools"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daylorwilliams5/AgentTrace.git"
+  },
+  "bugs": {
+    "url": "https://github.com/daylorwilliams5/AgentTrace/issues"
+  },
+  "homepage": "https://github.com/daylorwilliams5/AgentTrace#readme",
   "type": "module",
   "scripts": {
     "dev": "vite",
